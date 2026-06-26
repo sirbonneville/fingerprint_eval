@@ -194,6 +194,20 @@ class CellResult:
     def spread(self, metric: str) -> Optional[float]:
         return self.metrics[metric].iqr
 
+    def metric_values(self, metric: str) -> List[Optional[float]]:
+        """Raw per-run values for a metric (what the analysis layer reads).
+
+        The distribution summaries hide the run-to-run scatter; the honest
+        analysis needs the actual N samples.
+        """
+        if metric not in _METRIC_EXTRACTORS:
+            raise ValueError("unknown metric %r" % metric)
+        extract = _METRIC_EXTRACTORS[metric]
+        return [extract(r) for r in self.records]
+
+
+METRIC_NAMES = tuple(_METRIC_EXTRACTORS.keys())
+
 
 def run_cell(
     cell: CellConfig,

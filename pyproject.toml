@@ -12,6 +12,9 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
 
+[project.scripts]
+agent-eval-harness = "agent_eval_harness.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
