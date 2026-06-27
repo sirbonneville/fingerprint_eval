@@ -1169,6 +1169,51 @@
       },
       "calibration_passed": false,
       "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-baseline__val-default__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "baseline",
+      "value": null,
+      "n": 30,
+      "config_hash": "15d39a11bddccc1e",
+      "headline": {
+        "trade_count": {
+          "median": 3.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.4,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 725.0000000000001,
+          "iqr": 344.30253300000027
+        },
+        "median_trade_size": {
+          "median": 224.02500000000003,
+          "iqr": 100.00000000000014
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
     }
   ],
   "session": {
