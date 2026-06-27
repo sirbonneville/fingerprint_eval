@@ -66,6 +66,7 @@ class EpisodeLog:
     footprint: Footprint
     opening_probabilities: List[float] = field(default_factory=list)
     closing_probabilities: List[float] = field(default_factory=list)
+    closing_position: List[float] = field(default_factory=list)
 
     def to_jsonl(self, path: str) -> None:
         """Persist one JSON line per turn (input->output) plus a settlement line."""
@@ -84,6 +85,7 @@ class EpisodeLog:
                         "pnl": self.pnl,
                         "opening_probabilities": self.opening_probabilities,
                         "closing_probabilities": self.closing_probabilities,
+                        "closing_position": self.closing_position,
                         "footprint": asdict(self.footprint),
                     }
                 )
@@ -107,7 +109,9 @@ def run_episode(
     market.set_time(0.0)
     opening_probabilities = list(market.current_state().probabilities)
 
-    for (t, _price) in path.trading_points():
+    trading_pts = path.trading_points()
+    total_turns = len(trading_pts)
+    for turn_index, (t, _price) in enumerate(trading_pts, start=1):
         market.set_time(t)
         state = market.current_state()
         visible = path.prices_up_to(t)
@@ -120,6 +124,8 @@ def run_episode(
             cash=wallet.cash,
             trade_history=trade_history,
             token=token,
+            turn_index=turn_index,
+            total_turns=total_turns,
         )
         response = model(prompt)
         parsed = parse(response)
@@ -175,7 +181,11 @@ def run_episode(
 
     # Implied probabilities the market reached by trading close -- the raw material
     # for the discovery metric (did the probe move probability toward the truth?).
-    closing_probabilities = list(market.current_state().probabilities)
+    closing_state = market.current_state()
+    closing_probabilities = list(closing_state.probabilities)
+    # The probe's own position at close -- the raw material for the sizing-
+    # INDEPENDENT discovery read (which bucket it favored, not how hard it bet).
+    closing_position = list(closing_state.my_position)
 
     # Settlement against the reference price (end of the path, after the dead window).
     market.set_time(path.points[-1][0])
@@ -209,6 +219,7 @@ def run_episode(
         footprint=footprint,
         opening_probabilities=opening_probabilities,
         closing_probabilities=closing_probabilities,
+        closing_position=closing_position,
     )
 
 

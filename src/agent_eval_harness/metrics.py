@@ -14,28 +14,39 @@ from typing import List, Optional, Sequence, Tuple
 
 @dataclass
 class Discovery:
-    """The headline metric: did implied probability discover the true outcome?
+    """Did the probe discover the true outcome? Two FAMILIES, kept separate:
 
-    All single-run; the runner reads the distribution across N. ``prob_on_winner``
-    is the probability mass the market placed on the eventual winner at trading
-    close. ``brier`` is the multi-class Brier score vs the realized one-hot outcome
-    (lower is better). ``edge_over_open`` is how much the probe improved the
-    estimate from the opening probabilities (positive => moved toward truth).
+    Magnitude-based (how much probability mass the probe pushed onto the winner) --
+    these reward aggressive sizing as well as accuracy, so a hedged-but-correct
+    probe scores low:
+    - ``prob_on_winner``: implied-prob mass on the eventual winner at close.
+    - ``brier``: multi-class Brier vs the realized one-hot outcome (lower better).
+    - ``edge_over_open``: improvement in prob_on_winner from the opening odds.
 
-    IMPORTANT: with a stand-in model these numbers describe plumbing, not
-    discovery -- a non-strategic trader does not discover prices. Only trust them
-    once a real model is behind the Model protocol.
+    Sizing-INDEPENDENT (did the probe's position *direction* favor the winner,
+    regardless of how much it bet) -- these score a correct-but-cautious probe
+    fairly, which is the right headline for a probe that sizes intelligently:
+    - ``winner_top_pick``: 1.0 if the winner is the probe's largest position, else
+      0.0; ``None`` if the probe took no position (no opinion expressed).
+    - ``winner_rank_score``: 1.0 if the winner is the top-held bucket, 0.0 if last,
+      linearly between; ``None`` if no position. This is the recommended gate
+      metric -- it cannot be gamed by betting harder.
+
+    IMPORTANT: with a stand-in model these describe plumbing, not discovery.
     """
 
     prob_on_winner: float
     brier: float
     edge_over_open: float
+    winner_top_pick: Optional[float] = None
+    winner_rank_score: Optional[float] = None
 
 
 def compute_discovery(
     closing_probabilities: Sequence[float],
     winning_outcome: int,
     opening_probabilities: Optional[Sequence[float]] = None,
+    closing_position: Optional[Sequence[float]] = None,
 ) -> Discovery:
     closing = list(closing_probabilities)
     prob_on_winner = closing[winning_outcome] if 0 <= winning_outcome < len(closing) else 0.0
@@ -46,7 +57,29 @@ def compute_discovery(
         edge = prob_on_winner - opening_probabilities[winning_outcome]
     else:
         edge = 0.0
-    return Discovery(prob_on_winner=prob_on_winner, brier=brier, edge_over_open=edge)
+
+    # Sizing-independent: rank of the winner among the probe's own positions.
+    # Uses only the ORDER of holdings, never their magnitude, so a correct probe
+    # that bets gently scores the same as one that bets the farm.
+    top_pick: Optional[float] = None
+    rank_score: Optional[float] = None
+    if closing_position is not None:
+        pos = list(closing_position)
+        total = sum(abs(x) for x in pos)
+        if total > 1e-9 and 0 <= winning_outcome < len(pos):
+            w = pos[winning_outcome]
+            n_strictly_better = sum(1 for x in pos if x > w + 1e-12)
+            top_pick = 1.0 if n_strictly_better == 0 else 0.0
+            n = len(pos)
+            rank_score = 1.0 - (n_strictly_better / (n - 1)) if n > 1 else 1.0
+
+    return Discovery(
+        prob_on_winner=prob_on_winner,
+        brier=brier,
+        edge_over_open=edge,
+        winner_top_pick=top_pick,
+        winner_rank_score=rank_score,
+    )
 
 
 @dataclass

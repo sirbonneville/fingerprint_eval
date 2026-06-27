@@ -276,12 +276,19 @@ def openrouter_factory(model: str, seed_per_run: bool = True, **kwargs) -> Calla
     With ``seed_per_run`` the per-run seed is set to the run index for best-effort
     reproducibility across the N runs of a cell. Extra kwargs pass through to
     :class:`OpenRouterModel` (temperature, max_tokens, on_error, referer, ...).
+
+    The cell's ``temperature`` is authoritative when present so that sweeping the
+    ``temperature`` axis actually varies the model. The ``temperature`` kwarg here
+    only acts as a fallback (e.g. for a cell-less ``--ping``).
     """
 
     def factory(cell, run):
         kw = dict(kwargs)
         if seed_per_run and "seed" not in kw:
             kw["seed"] = run
+        cell_temp = getattr(cell, "temperature", None)
+        if cell_temp is not None:
+            kw["temperature"] = cell_temp
         return OpenRouterModel(model=model, **kw)
 
     return factory

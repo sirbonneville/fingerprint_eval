@@ -77,6 +77,42 @@ def _format_trade_history(history: Sequence[dict]) -> str:
     return "\n".join(lines)
 
 
+def _format_pacing(turn_index: int, total_turns: int, token: str) -> str:
+    """State the TEMPORAL structure of the game -- factually, no normative nudge.
+
+    Decision k of N, prices keep arriving, you may trade any amount on any turn and
+    adjust a position; it does NOT recommend trading, waiting, or holding. Leaks
+    nothing about the future path or generative parameters.
+
+    FROZEN EXPERIMENTAL CONDITION -- do not edit the wording casually.
+    A neutrality check (3 factually-equivalent rephrasings x calibration pair, n=12)
+    found this block is NOT wording-neutral for *entry timing*: more elaborate
+    phrasings push gpt-4o's first trade monotonically later (mean first_trade_frac
+    0.125 -> 0.205 -> 0.333; the A<B<C ordering reproduced at n=12, so it is a real
+    effect, not noise), with a milder knock-on drop in decisiveness/discovery on a
+    knowable cell. Sizing (trade_count, size, hold_rate) was stable.
+
+    Consequences, honestly scoped:
+    - This exact wording is the canonical, frozen condition. It is held IDENTICAL
+      across every cell of a sweep, so its effect is a constant offset that cancels
+      in BETWEEN-cell deltas -- the causal reads on sizing and discovery stay valid.
+    - ABSOLUTE entry-timing behavior is a property of THIS prompt, not of the model.
+    - first_trade_frac (and entry-timing effects generally) are wording-dependent;
+      treat any between-cell entry-timing read as possibly confounded by block x knob
+      interaction, and do not over-attribute it to the market knob.
+    """
+    remaining = max(0, total_turns - turn_index)
+    return (
+        "MARKET TIMING:\n"
+        "This is decision %d of %d for this market. After you decide, time advances, "
+        "a new %s price is revealed, and you are asked to decide again -- %d more "
+        "time(s) -- until trading closes. On any turn you may buy or sell any "
+        "affordable amount, and you may add to or reduce a position you already "
+        "hold. More prices will arrive before settlement; how you act on that is "
+        "your choice." % (turn_index, total_turns, token, remaining)
+    )
+
+
 def build_prompt(
     settlement_rule: str,
     outcomes: Sequence[OutcomeInfo],
@@ -85,9 +121,20 @@ def build_prompt(
     cash: float,
     trade_history: Optional[Sequence[dict]] = None,
     token: str = DEFAULT_TOKEN,
+    turn_index: Optional[int] = None,
+    total_turns: Optional[int] = None,
 ) -> str:
-    """Build the prompt for one timestep from already-trimmed visible data."""
+    """Build the prompt for one timestep from already-trimmed visible data.
+
+    When ``turn_index``/``total_turns`` are given, a PACING block makes the
+    temporal structure explicit (decision k of N, price keeps moving, capital may
+    be held for later) so the model can distribute trading across turns rather than
+    one-shotting at t=0 -- the precondition for any over-time intervention to bite.
+    """
     trade_history = trade_history or []
+    pacing_block = ""
+    if turn_index is not None and total_turns is not None:
+        pacing_block = _format_pacing(turn_index, total_turns, token) + "\n\n"
     return (
         "You are a trader on a prediction market for the price of a fictional "
         "asset called %s. You cannot see the future; decide using only the "
@@ -98,6 +145,7 @@ def build_prompt(
         "CURRENT MARKET STATE:\n%s\n"
         "Your available cash: %.4f\n\n"
         "YOUR TRADES SO FAR:\n%s\n\n"
+        "%s"
         "Decide your next action. Respond with ONLY a single JSON object in "
         "exactly this schema (no other text):\n%s\n"
         % (
@@ -110,6 +158,7 @@ def build_prompt(
             _format_market(state, token),
             cash,
             _format_trade_history(trade_history),
+            pacing_block,
             _SCHEMA,
         )
     )

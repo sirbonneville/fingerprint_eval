@@ -6,6 +6,7 @@ without ever touching the network.
 """
 
 import json
+import os
 
 import pytest
 
@@ -130,6 +131,30 @@ def test_factory_seeds_per_run_and_builds_models():
     assert isinstance(m0, OpenRouterModel)
     assert m0.seed == 0 and m1.seed == 1
     assert parse(m0("hi")).action == "hold"
+
+
+def test_load_dotenv_sets_missing_keys_only(tmp_path, monkeypatch):
+    from agent_eval_harness.cli import load_dotenv
+
+    env = tmp_path / ".env"
+    env.write_text(
+        "# a comment\n"
+        "OPENROUTER_API_KEY=sk-or-fromfile\n"
+        'OPENROUTER_MODEL="anthropic/claude-3.5-sonnet"\n'
+        "\n"
+    )
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    monkeypatch.setenv("OPENROUTER_MODEL", "already/set")  # existing env must win
+
+    assert load_dotenv(str(env)) is True
+    assert os.environ["OPENROUTER_API_KEY"] == "sk-or-fromfile"   # filled from file
+    assert os.environ["OPENROUTER_MODEL"] == "already/set"        # not overwritten
+
+
+def test_load_dotenv_missing_file_is_noop():
+    from agent_eval_harness.cli import load_dotenv
+
+    assert load_dotenv("definitely-not-a-real-file.env") is False
 
 
 def test_factory_runs_a_full_episode_offline():

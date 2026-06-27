@@ -45,23 +45,50 @@ RECOMMENDED_N = 10
 EFFECT_RATIO_DETECTABLE = 1.0   # delta must exceed the typical within-cell IQR
 CLES_SEPARATION = 0.8           # |CLES - 0.5| this far out => cleanly separated
 
-# Curated headline metrics for reports (you can analyze any METRIC_NAMES).
-DEFAULT_REPORT_METRICS = (
-    "discovery_prob_on_winner",
-    "discovery_brier",
+# Two DELIBERATELY SEPARATE reads, never conflated:
+#   BEHAVIOR -- what the model DID (the headline causal read; watch it shift).
+#   DISCOVERY -- how well implied probability found the truth (accuracy).
+# These can diverge -- a knob may move accuracy without moving behavioral style,
+# or vice versa -- and that divergence is itself a finding. The report prints
+# them under separate banners so a discovery effect can never masquerade as a
+# behavioral one. pnl/win stay out (money-winning is out of scope).
+BEHAVIOR_REPORT_METRICS = (
     "trade_count",
-    "total_volume",
+    "hold_rate",
     "first_trade_frac",
+    "median_trade_size",
+    "total_volume",
     "direction_switches",
     "outcomes_traded",
-    "pnl",
-    "win",
+    "n_rejected",
 )
+DISCOVERY_REPORT_METRICS = (
+    # sizing-INDEPENDENT first (the fair headline for a probe that sizes smartly):
+    "discovery_rank_score",
+    "discovery_top_pick",
+    # magnitude-based (reward aggressive sizing; read with that caveat):
+    "discovery_prob_on_winner",
+    "discovery_brier",
+    "discovery_edge_over_open",
+)
+# Backwards-compatible default (behavior is the headline causal read).
+DEFAULT_REPORT_METRICS = BEHAVIOR_REPORT_METRICS
 
 PLUMBING_BANNER = (
     "PLUMBING ONLY -- stand-in model. No number below is a finding; this validates "
     "the analysis machinery, not discovery. Trust nothing until a real model is "
     "behind the Model protocol."
+)
+
+# A real model is behind the protocol, but the calibration gate was bypassed
+# (--no-trust). This is the right mode for a BEHAVIOR read: the footprint is real
+# model output and reads normally; only DISCOVERY is ungated (and, at geometries
+# where the discovery metric saturates, untrustworthy by design). Distinct from
+# PLUMBING_BANNER so a real behavioral finding is never mislabeled "stand-in".
+DISCOVERY_UNTRUSTED_BANNER = (
+    "DISCOVERY UNGATED -- real model, calibration gate bypassed (--no-trust). The "
+    "BEHAVIOR section is real model output and reads normally. The DISCOVERY section "
+    "is NOT gated by calibration and must not be read as a discovery finding."
 )
 
 
@@ -446,58 +473,85 @@ def format_report(
     trusted: bool = False,
     baseline: object = None,
     show_plots: bool = True,
+    real_model: bool = False,
 ) -> str:
-    """Human-readable report foregrounding effect-vs-spread and overlap."""
-    analyses = analyze_grid(grid, metrics=metrics, trusted=trusted, baseline=baseline)
+    """Human-readable report foregrounding effect-vs-spread and overlap.
+
+    When ``metrics`` is None (default), prints two clearly separated sections --
+    BEHAVIOR (what the model did) and DISCOVERY (accuracy) -- so a discovery effect
+    can never be misread as a behavioral one. Pass an explicit ``metrics`` list to
+    override the grouping.
+
+    ``real_model`` distinguishes the two un-trusted modes: a stand-in model (pure
+    plumbing) vs a real model with the calibration gate bypassed (--no-trust), where
+    the BEHAVIOR read is a genuine finding and only DISCOVERY is ungated.
+    """
     lines: List[str] = []
     if not trusted:
         lines.append("=" * 78)
-        lines.append(PLUMBING_BANNER)
+        lines.append(DISCOVERY_UNTRUSTED_BANNER if real_model else PLUMBING_BANNER)
         lines.append("=" * 78)
     lines.append("AXIS SWEPT: %s   (baseline = first cell unless noted)" % grid.axis)
     lines.append("")
 
-    for metric, am in analyses.items():
-        lines.append("-" * 78)
-        lines.append("METRIC: %s" % metric)
-        lines.append("  per-cell  (median [IQR]  range[min,max]  n):")
-        for v, s in am.per_cell.items():
-            lines.append(
-                "    %-14s median=%s  IQR=%.4g  range=[%s, %s]  n=%d"
-                % (
-                    "%s=%s" % (grid.axis, v),
-                    _fmt(s["median"]),
-                    s["iqr"],
-                    _fmt(s["min"]),
-                    _fmt(s["max"]),
-                    s["n"],
-                )
-            )
-        for e in am.effects:
+    if metrics is None:
+        groups = [
+            ("BEHAVIOR  --  what the model DID (headline causal read)", BEHAVIOR_REPORT_METRICS),
+            ("DISCOVERY --  accuracy: did implied probability find the truth", DISCOVERY_REPORT_METRICS),
+        ]
+    else:
+        groups = [(None, tuple(metrics))]
+
+    for header, group_metrics in groups:
+        if header is not None:
+            lines.append("#" * 78)
+            lines.append("## %s" % header)
+            lines.append("#" * 78)
             lines.append("")
-            lines.append(
-                "  %s=%s vs %s=%s  ->  delta(median)=%s, effect/spread=%s, CLES=%.2f  =>  %s"
-                % (
-                    grid.axis, e.value_a, grid.axis, e.value_b,
-                    _fmt(e.delta_median),
-                    ("%.2f" % e.effect_over_spread) if e.effect_over_spread is not None else "n/a",
-                    e.cles,
-                    e.verdict,
+        analyses = analyze_grid(
+            grid, metrics=group_metrics, trusted=trusted, baseline=baseline
+        )
+        for metric, am in analyses.items():
+            lines.append("-" * 78)
+            lines.append("METRIC: %s" % metric)
+            lines.append("  per-cell  (median [IQR]  range[min,max]  n):")
+            for v, s in am.per_cell.items():
+                lines.append(
+                    "    %-14s median=%s  IQR=%.4g  range=[%s, %s]  n=%d"
+                    % (
+                        "%s=%s" % (grid.axis, v),
+                        _fmt(s["median"]),
+                        s["iqr"],
+                        _fmt(s["min"]),
+                        _fmt(s["max"]),
+                        s["n"],
+                    )
                 )
-            )
-            for note in e.notes:
-                if note == PLUMBING_BANNER:
-                    continue
-                lines.append("      - %s" % note)
-            if show_plots:
-                plot = overlap_plot(
-                    grid.cells[e.value_a].metric_values(metric),
-                    grid.cells[e.value_b].metric_values(metric),
-                    label_a="%s=%s" % (grid.axis, e.value_a),
-                    label_b="%s=%s" % (grid.axis, e.value_b),
+            for e in am.effects:
+                lines.append("")
+                lines.append(
+                    "  %s=%s vs %s=%s  ->  delta(median)=%s, effect/spread=%s, CLES=%.2f  =>  %s"
+                    % (
+                        grid.axis, e.value_a, grid.axis, e.value_b,
+                        _fmt(e.delta_median),
+                        ("%.2f" % e.effect_over_spread) if e.effect_over_spread is not None else "n/a",
+                        e.cles,
+                        e.verdict,
+                    )
                 )
-                lines.extend("      " + ln for ln in plot.splitlines())
-        lines.append("")
+                for note in e.notes:
+                    if note == PLUMBING_BANNER:
+                        continue
+                    lines.append("      - %s" % note)
+                if show_plots:
+                    plot = overlap_plot(
+                        grid.cells[e.value_a].metric_values(metric),
+                        grid.cells[e.value_b].metric_values(metric),
+                        label_a="%s=%s" % (grid.axis, e.value_a),
+                        label_b="%s=%s" % (grid.axis, e.value_b),
+                    )
+                    lines.extend("      " + ln for ln in plot.splitlines())
+            lines.append("")
     return "\n".join(lines)
 
 

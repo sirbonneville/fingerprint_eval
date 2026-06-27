@@ -32,12 +32,18 @@ from .harness import EpisodeLog, run_episode
 from .metrics import Discovery, Footprint, compute_discovery
 from .model import RandomTrader
 from .price_path import MODEL_ARITHMETIC, generate_path
+from .prompt import DEFAULT_TOKEN
 
 # A model factory builds a fresh model for (cell, run_index). Fresh-per-run keeps
 # stateful stand-ins reproducible (seed by run) and real models independent.
 ModelFactory = Callable[["CellConfig", int], object]
 
-SWEEPABLE_AXES = ("volatility", "knowability_min", "band_width")
+# Market-side interventions plus model-side knobs. "temperature" is a model
+# setting, not a market field: it changes how the subject behaves, which is a
+# legitimate intervention on "what causally affects the model". build_path /
+# build_market ignore it (so the environment is held fixed while it varies);
+# only the model factory reads it.
+SWEEPABLE_AXES = ("volatility", "knowability_min", "band_width", "temperature", "drift")
 
 
 @dataclass
@@ -60,13 +66,25 @@ class CellConfig:
     initial_shares: float = 100.0
     starting_cash: float = 1000.0
     price_model: str = MODEL_ARITHMETIC
+    # model-side knob (a sweepable intervention on the subject, not the market);
+    # consumed by the model factory, ignored by build_path/build_market.
+    temperature: float = 0.7
+    token: str = DEFAULT_TOKEN  # the fictional asset ticker shown in the prompt
     settlement_rule_text: str = (
         "Settles to the band containing the asset's price at the settlement reference."
     )
+    # Optional explicit overrides (used by richer market templates, e.g. money bands
+    # from MID x factors). When set, these take precedence over the computed
+    # centered-uniform edges / default labels.
+    band_edges_override: Optional[List[float]] = None
+    label_overrides: Optional[List[str]] = None
     label: str = ""
 
     def band_edges(self) -> List[float]:
-        """Evenly spaced interior edges of width ``band_width``, centered on ``anchor``."""
+        """Outcome band edges -- explicit override if given, else evenly spaced
+        edges of width ``band_width`` centered on ``anchor``."""
+        if self.band_edges_override is not None:
+            return list(self.band_edges_override)
         n_edges = self.n_outcomes - 1
         return [
             self.anchor + (i - (n_edges - 1) / 2.0) * self.band_width
@@ -74,6 +92,8 @@ class CellConfig:
         ]
 
     def outcome_labels(self) -> List[str]:
+        if self.label_overrides is not None:
+            return list(self.label_overrides)
         return ["band %d" % i for i in range(self.n_outcomes)]
 
     def build_market(self) -> PriceBucketMarket:
@@ -167,7 +187,13 @@ _METRIC_EXTRACTORS = {
     "discovery_prob_on_winner": lambda r: r.discovery.prob_on_winner,
     "discovery_brier": lambda r: r.discovery.brier,
     "discovery_edge_over_open": lambda r: r.discovery.edge_over_open,
+    # sizing-INDEPENDENT discovery (winner's rank among the probe's positions):
+    "discovery_rank_score": lambda r: r.discovery.winner_rank_score,
+    "discovery_top_pick": lambda r: r.discovery.winner_top_pick,
     "trade_count": lambda r: r.footprint.trade_count,
+    "hold_rate": lambda r: (
+        r.footprint.n_holds / r.footprint.n_turns if r.footprint.n_turns else None
+    ),
     "total_volume": lambda r: r.footprint.total_volume,
     "first_trade_frac": lambda r: r.footprint.first_trade_frac,
     "direction_switches": lambda r: r.footprint.direction_switches,
@@ -223,9 +249,14 @@ def run_cell(
         market = cell.build_market()
         path = cell.build_path(seed=run)
         model = model_factory(cell, run)
-        log = run_episode(market, model, path, starting_cash=cell.starting_cash, seed=run)
+        log = run_episode(
+            market, model, path, starting_cash=cell.starting_cash, token=cell.token, seed=run
+        )
         disc = compute_discovery(
-            log.closing_probabilities, log.winning_outcome, log.opening_probabilities
+            log.closing_probabilities,
+            log.winning_outcome,
+            log.opening_probabilities,
+            closing_position=log.closing_position,
         )
         records.append(
             RunRecord(
@@ -329,7 +360,7 @@ def run_calibration(
     n_runs: int = 10,
     margin: float = 0.05,
     trust_discovery: bool = False,
-    metric: str = "discovery_prob_on_winner",
+    metric: str = "discovery_rank_score",
 ) -> CalibrationResult:
     """Run the control pair and judge whether the probe discovers easy >> hard."""
     easy_cell, hard_cell = control_pair(base)

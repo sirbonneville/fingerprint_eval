@@ -154,6 +154,17 @@ def test_experiment_trusted_gate_stops_when_easy_control_fails():
     assert "skipped" in res.message.lower()
 
 
+def test_token_and_settlement_rule_reach_the_prompt():
+    cell = CellConfig(
+        volatility=0.5, knowability_min=0.0, band_width=10.0, n_outcomes=3,
+        token="FOOBAR", settlement_rule_text="Custom settlement clause XYZ.",
+    )
+    result = run_cell(cell, lambda c, r: HoldModel(), n_runs=1, store_logs=True)
+    prompt = result.records[0].log.turns[0].prompt
+    assert "FOOBAR" in prompt
+    assert "Custom settlement clause XYZ." in prompt
+
+
 def test_holdmodel_discovery_is_uninformative_baseline():
     # Sanity: with no trading, closing prob on winner ~ 1/n_outcomes (no discovery).
     cell = base_cell()
