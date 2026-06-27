@@ -119,6 +119,64 @@ def test_prompt_is_dateless_and_uses_fictional_token():
     assert not re.search(r"\b(19|20)\d{2}\b", prompt)
 
 
+def test_prompt_discloses_dead_window_in_relative_minutes():
+    m = make_market()
+    path = make_path()
+    t = 60.0
+    prompt = build_prompt(
+        m.settlement_rule_text(), m.outcomes(), m.current_state(),
+        path.prices_up_to(t), cash=1000.0, trade_history=[], token="ZQX",
+        dead_window_min=90.0,
+    )
+    # the dead window is perceptible ...
+    assert "90 min after trading closes" in prompt
+    # ... but discipline still holds: no price timestamp after t, no calendar year
+    mentioned = [float(x) for x in re.findall(r"t=(\d+(?:\.\d+)?) min", prompt)]
+    assert max(mentioned) <= t
+    assert not re.search(r"\b(19|20)\d{2}\b", prompt)
+
+
+def test_prompt_hides_dead_window_when_not_disclosed():
+    m = make_market()
+    path = make_path()
+    disclosed = build_prompt(
+        m.settlement_rule_text(), m.outcomes(), m.current_state(),
+        path.prices_up_to(30.0), cash=1000.0, trade_history=[], token="ZQX",
+        dead_window_min=90.0,
+    )
+    hidden = build_prompt(
+        m.settlement_rule_text(), m.outcomes(), m.current_state(),
+        path.prices_up_to(30.0), cash=1000.0, trade_history=[], token="ZQX",
+        dead_window_min=None,
+    )
+    assert "after trading closes" in disclosed
+    assert "after trading closes" not in hidden
+
+
+def test_prompt_zero_dead_window_says_at_close():
+    m = make_market()
+    path = make_path()
+    prompt = build_prompt(
+        m.settlement_rule_text(), m.outcomes(), m.current_state(),
+        path.prices_up_to(30.0), cash=1000.0, trade_history=[], token="ZQX",
+        dead_window_min=0.0,
+    )
+    assert "at the moment trading closes" in prompt
+
+
+def test_run_episode_discloses_dead_window_by_default():
+    m = make_market(trading_close_min=120.0)
+    path = make_path()  # post_close_min=60 -> 60-min dead window
+    log = run_episode(m, HoldModel(), path, starting_cash=1000.0)
+    assert "60 min after trading closes" in log.turns[0].prompt
+    # and the blind condition omits it
+    m2 = make_market(trading_close_min=120.0)
+    log2 = run_episode(
+        m2, HoldModel(), make_path(), starting_cash=1000.0, disclose_dead_window=False
+    )
+    assert "after trading closes" not in log2.turns[0].prompt
+
+
 # ----------------------------------------------------------------- end to end
 
 

@@ -1,0 +1,1245 @@
+{
+  "cells": [
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-baseline__val-default__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "baseline",
+      "value": null,
+      "n": 30,
+      "config_hash": "15d39a11bddccc1e",
+      "headline": {
+        "trade_count": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.6,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 576.7300659999999,
+          "iqr": 333.3312499999997
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 6.597508004999895
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-volatility__val-0.5__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 0.5,
+      "n": 30,
+      "config_hash": "89566002990955a6",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 200.0
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-volatility__val-1__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 1.0,
+      "n": 30,
+      "config_hash": "931bfe08a7a4f8d4",
+      "headline": {
+        "trade_count": {
+          "median": 1.5,
+          "iqr": 2.0
+        },
+        "hold_rate": {
+          "median": 0.7,
+          "iqr": 0.4
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 487.26253299999985
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 19.966249999999945
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-volatility__val-1.5__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 1.5,
+      "n": 30,
+      "config_hash": "11d55e3680c3bad4",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 323.4300989999999
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 6.599934000000019
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-volatility__val-2__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 2.0,
+      "n": 30,
+      "config_hash": "bf3f893a28a71a70",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 333.33164999999997,
+          "iqr": 320.1301319999999
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 6.599934000000019
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0625
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-temperature__val-0__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "temperature",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "4154b8f5192cfdd9",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-temperature__val-0.7__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "temperature",
+      "value": 0.7,
+      "n": 30,
+      "config_hash": "6bea80496bf6bddc",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 205.035033
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 10.417500000000018
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-temperature__val-1.2__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "temperature",
+      "value": 1.2,
+      "n": 30,
+      "config_hash": "bef393ed17dcae89",
+      "headline": {
+        "trade_count": {
+          "median": 1.5,
+          "iqr": 1.25
+        },
+        "hold_rate": {
+          "median": 0.7,
+          "iqr": 0.4
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 373.2300000000005
+        },
+        "median_trade_size": {
+          "median": 333.32999999999987,
+          "iqr": 36.364457536411294
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0625
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-knowability_min__val-0__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "knowability_min",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "1dffe15b3527138f",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 416.66499999999996,
+          "iqr": 341.66499999999974
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 10.417500000000018
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-knowability_min__val-60__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "knowability_min",
+      "value": 60.0,
+      "n": 30,
+      "config_hash": "f20d42433f864baf",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 166.67000000000007
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-knowability_min__val-120__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "knowability_min",
+      "value": 120.0,
+      "n": 30,
+      "config_hash": "75e66d2f9a64502e",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.25
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.04999999999999993
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 200.00250000000005
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-band_width__val-5__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "band_width",
+      "value": 5.0,
+      "n": 30,
+      "config_hash": "d7469ee0bc26cdda",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 166.67000000000007
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-band_width__val-20__n30",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "band_width",
+      "value": 20.0,
+      "n": 30,
+      "config_hash": "0894c51c4a2c89b3",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 2.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.4
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 363.7000000000003
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 1.1368683772161603e-13
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-baseline__val-default__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "baseline",
+      "value": null,
+      "n": 30,
+      "config_hash": "e10dea2b60e87c7d",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 441.4697999999999,
+          "iqr": 320.1301319999999
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 2.3149835000000394
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.25
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-volatility__val-0.5__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 0.5,
+      "n": 30,
+      "config_hash": "672a9e3a40b50089",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 320.1301319999999
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 4.9499505
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.375
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.25
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-volatility__val-1__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 1.0,
+      "n": 30,
+      "config_hash": "e129abaebe40d878",
+      "headline": {
+        "trade_count": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.6,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 333.33249999999975
+        },
+        "median_trade_size": {
+          "median": 333.3299999999998,
+          "iqr": 33.32999999999987
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-volatility__val-1.5__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 1.5,
+      "n": 30,
+      "config_hash": "99be65dbfe4126c6",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 341.6725000000001
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 6.600759000000039
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-volatility__val-2__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 2.0,
+      "n": 30,
+      "config_hash": "60cd6eaf865b520d",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 333.3299999999997
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 159.24500000000006
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-temperature__val-0__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "temperature",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "ca64247445c0ed7d",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 333.3299999999997
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 1.1368683772161603e-13
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-temperature__val-0.7__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "temperature",
+      "value": 0.7,
+      "n": 30,
+      "config_hash": "a011cc63d6adfdf9",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.25
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.2500000000000001
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 333.3312499999997
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 1.7053025658242404e-13
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0625
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-temperature__val-1.2__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "temperature",
+      "value": 1.2,
+      "n": 30,
+      "config_hash": "cb52e237b9d8b773",
+      "headline": {
+        "trade_count": {
+          "median": 2.0,
+          "iqr": 2.0
+        },
+        "hold_rate": {
+          "median": 0.6,
+          "iqr": 0.4
+        },
+        "total_volume": {
+          "median": 620.4665999999999,
+          "iqr": 520.4693369702841
+        },
+        "median_trade_size": {
+          "median": 326.7300659999999,
+          "iqr": 83.33124999999995
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-knowability_min__val-0__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "knowability_min",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "b2912c25615992e5",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 323.4300989999999
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 166.6700000000002
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.25
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-knowability_min__val-60__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "knowability_min",
+      "value": 60.0,
+      "n": 30,
+      "config_hash": "4f566fc2406356ce",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 166.67000000000007
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-knowability_min__val-120__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "knowability_min",
+      "value": 120.0,
+      "n": 30,
+      "config_hash": "a489b2c17d697e45",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.25
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.04999999999999993
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 175.00250000000005
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-band_width__val-5__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "band_width",
+      "value": 5.0,
+      "n": 30,
+      "config_hash": "943c7762007e9315",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.20000000000000007
+        },
+        "total_volume": {
+          "median": 500.0,
+          "iqr": 323.4300989999999
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 6.599934000000019
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.1875
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "openai-gpt-4o__mem-on__axis-band_width__val-20__n30",
+      "model": "openai/gpt-4o",
+      "memory": "on",
+      "axis": "band_width",
+      "value": 20.0,
+      "n": 30,
+      "config_hash": "71a0bbf93a535495",
+      "headline": {
+        "trade_count": {
+          "median": 2.0,
+          "iqr": 2.0
+        },
+        "hold_rate": {
+          "median": 0.6,
+          "iqr": 0.4
+        },
+        "total_volume": {
+          "median": 643.3950659999999,
+          "iqr": 508.33249999999975
+        },
+        "median_trade_size": {
+          "median": 333.3299999999998,
+          "iqr": 21.61620049999999
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.25
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    }
+  ],
+  "session": {
+    "label": "official-v1",
+    "timestamp": "2026-06-27_official-v1",
+    "models": [
+      "openai/gpt-4o",
+      "anthropic/claude-sonnet-4"
+    ],
+    "memory": "both",
+    "n": 30,
+    "dry_run": false,
+    "git_commit": "7a2182c11f753b0c8f31154bc8996e211b82aa57",
+    "battery": [
+      [
+        "baseline",
+        [
+          null
+        ]
+      ],
+      [
+        "volatility",
+        [
+          0.5,
+          1.0,
+          1.5,
+          2.0
+        ]
+      ],
+      [
+        "temperature",
+        [
+          0.0,
+          0.7,
+          1.2
+        ]
+      ],
+      [
+        "knowability_min",
+        [
+          0.0,
+          60.0,
+          120.0
+        ]
+      ],
+      [
+        "band_width",
+        [
+          5.0,
+          20.0
+        ]
+      ]
+    ],
+    "metric_names": [
+      "discovery_prob_on_winner",
+      "discovery_brier",
+      "discovery_edge_over_open",
+      "discovery_rank_score",
+      "discovery_top_pick",
+      "trade_count",
+      "hold_rate",
+      "total_volume",
+      "first_trade_frac",
+      "direction_switches",
+      "outcomes_traded",
+      "median_trade_size",
+      "n_rejected",
+      "n_parse_failures",
+      "pnl",
+      "return_pct",
+      "win"
+    ]
+  }
+}

@@ -69,6 +69,14 @@ class CellConfig:
     # model-side knob (a sweepable intervention on the subject, not the market);
     # consumed by the model factory, ignored by build_path/build_market.
     temperature: float = 0.7
+    # MEMORY condition: when True, prior-turn rationales are replayed to the model
+    # so it reasons across turns. False = the canonical stateless condition.
+    memory: bool = False
+    # SETTLEMENT-TIMING disclosure: when True (faithful default), the prompt tells
+    # the model how long after close the settlement price is taken, so it perceives
+    # the dead window the way a real Delphi agent does. This makes knowability a
+    # perceptible (behavioral) axis. False = the older settlement-blind prompt.
+    disclose_dead_window: bool = True
     token: str = DEFAULT_TOKEN  # the fictional asset ticker shown in the prompt
     settlement_rule_text: str = (
         "Settles to the band containing the asset's price at the settlement reference."
@@ -250,7 +258,14 @@ def run_cell(
         path = cell.build_path(seed=run)
         model = model_factory(cell, run)
         log = run_episode(
-            market, model, path, starting_cash=cell.starting_cash, token=cell.token, seed=run
+            market,
+            model,
+            path,
+            starting_cash=cell.starting_cash,
+            token=cell.token,
+            seed=run,
+            memory=cell.memory,
+            disclose_dead_window=cell.disclose_dead_window,
         )
         disc = compute_discovery(
             log.closing_probabilities,

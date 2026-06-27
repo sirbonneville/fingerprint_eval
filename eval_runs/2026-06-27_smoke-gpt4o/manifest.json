@@ -1,0 +1,87 @@
+{
+  "cells": [
+    {
+      "folder": "openai-gpt-4o__mem-off__axis-baseline__val-default__n2",
+      "model": "openai/gpt-4o",
+      "memory": "off",
+      "axis": "baseline",
+      "value": null,
+      "n": 2,
+      "config_hash": "15d39a11bddccc1e",
+      "headline": {
+        "trade_count": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.8,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "median_trade_size": {
+          "median": 333.3299999999999,
+          "iqr": 0.0
+        },
+        "first_trade_frac": {
+          "median": 0.25,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 1.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": null,
+      "status": "complete"
+    }
+  ],
+  "session": {
+    "label": "smoke-gpt4o",
+    "timestamp": "2026-06-27_smoke-gpt4o",
+    "models": [
+      "openai/gpt-4o"
+    ],
+    "memory": "off",
+    "n": 2,
+    "dry_run": false,
+    "git_commit": "7a2182c11f753b0c8f31154bc8996e211b82aa57",
+    "battery": [
+      [
+        "baseline",
+        [
+          null
+        ]
+      ]
+    ],
+    "metric_names": [
+      "discovery_prob_on_winner",
+      "discovery_brier",
+      "discovery_edge_over_open",
+      "discovery_rank_score",
+      "discovery_top_pick",
+      "trade_count",
+      "hold_rate",
+      "total_volume",
+      "first_trade_frac",
+      "direction_switches",
+      "outcomes_traded",
+      "median_trade_size",
+      "n_rejected",
+      "n_parse_failures",
+      "pnl",
+      "return_pct",
+      "win"
+    ]
+  }
+}

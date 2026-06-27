@@ -100,8 +100,21 @@ def run_episode(
     starting_cash: float = 1000.0,
     token: str = DEFAULT_TOKEN,
     seed: Optional[int] = None,
+    memory: bool = False,
+    disclose_dead_window: bool = True,
 ) -> EpisodeLog:
-    """Run one full episode and return its log + footprint."""
+    """Run one full episode and return its log + footprint.
+
+    ``memory`` (default False) controls the MEMORY condition: when True, each
+    prior turn's rationale is replayed back to the model in the trade-history block
+    so it can reason across turns. False is the canonical stateless condition.
+
+    ``disclose_dead_window`` (default True, the faithful condition) surfaces the
+    settlement schedule -- how long after close the settlement price is recorded --
+    so the model can perceive the post-close dead window the way a real Delphi
+    agent does. False hides it (the older, settlement-blind prompt).
+    """
+    dead_window_min = path.knowability_window_min() if disclose_dead_window else None
     wallet = Wallet.with_budget(starting_cash)
     turns: List[TurnLog] = []
     trade_history: List[dict] = []  # compact, prompt-facing
@@ -126,6 +139,8 @@ def run_episode(
             token=token,
             turn_index=turn_index,
             total_turns=total_turns,
+            include_rationale=memory,
+            dead_window_min=dead_window_min,
         )
         response = model(prompt)
         parsed = parse(response)
@@ -176,6 +191,7 @@ def run_episode(
                 "size": parsed.size,
                 "ok": executed,
                 "error": error,
+                "rationale": parsed.rationale,
             }
         )
 

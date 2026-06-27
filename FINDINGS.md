@@ -151,7 +151,18 @@ market-redesign question, deliberately chosen.
 
 ---
 
-## 5. Volatility drives engagement (the first clean positive, behavior axis)
+> **PROMPT-VERSION NOTE (findings #5 and #6).** Both were measured under the
+> *settlement-blind* prompt, before the harness disclosed the settlement schedule
+> (the dead window). The official battery re-measures every axis under the new
+> *faithful* prompt (`disclose_dead_window=True`), so #5/#6 are **superseded** by
+> the battery's volatility/temperature cells. This is not wasted work: the battery
+> re-confirming these axes under a changed prompt is a **free robustness check** --
+> if volatility-moves-center and temperature-moves-spread reproduce under the
+> faithful prompt, the effects survive a prompt change (robust); if they shift,
+> that prompt-dependence is itself a finding. Read #5/#6 below as the old-prompt
+> baseline pending that check.
+
+## 5. Volatility drives engagement (the first clean positive, behavior axis)  [OLD-PROMPT; superseded by battery]
 
 Sweeping volatility ∈ {0.5, 1.0, 1.5, 2.0} (k=0, drift=0, 3 bands, N=10), reading
 the **un-confounded behavioral footprint**. Four correlated activity metrics move
@@ -187,7 +198,7 @@ is a genuine finding and only DISCOVERY is ungated.
 
 ---
 
-## 6. Temperature is a spread knob, not a center knob (the model-side intervention)
+## 6. Temperature is a spread knob, not a center knob (the model-side intervention)  [OLD-PROMPT; superseded by battery]
 
 Sweeping temperature ∈ {0.0, 0.7, 1.2} (vol=1.5, k=0, drift=0, 3 bands, N=10),
 the first **model-side** intervention — the within-model analog of the
@@ -264,6 +275,27 @@ un-confounded and is where the instrument sees clearly. Active:
 Together these two are a clean orthogonal pair: a market knob that shifts what the
 model typically does, and a model knob that shifts how variable it is around that
 typical behavior. That contrast is the instrument working as designed.
+
+### Prompt-faithfulness fix: settlement timing is now disclosed (knowability revived)
+
+The prompt previously hid settlement timing, so the model could not perceive the
+post-close dead window even though every real Delphi agent reads it from the
+settlement schedule. The harness now discloses it in relative minutes
+(`disclose_dead_window=True`, info-discipline-safe: market structure, not a price
+or generative parameter). Consequences recorded for the battery:
+
+- **Knowability is now a LIVE behavioral axis** (it was behaviorally dormant only
+  because the prompt hid it — distinct from its *discovery* deadness, which is
+  structural/martingale and unchanged). Sweeping it writes the window length into
+  the prompt, so it measures "told-about-window" (what a real agent faces); the
+  **disclosure on/off cross** disambiguates "window matters" vs "being told
+  matters" and is run as its own preset.
+- **band_width** stays live and is *mechanically distinct* from `n_outcomes`:
+  band_width sets how often the price crosses a bucket boundary during trading
+  (observed: tighter → more/smaller trades), `n_outcomes` sets the decision
+  surface's size. The battery keeps `n_outcomes` as a separate **geometry study**
+  (it changes the market, not an intervention on a fixed one); `starting_cash` is
+  an optional follow-up; `drift` stays parked.
 
 The temperature result is also a mechanistic sanity check on the instrument
 itself: temperature *is* a sampling-randomness parameter, so a sound instrument

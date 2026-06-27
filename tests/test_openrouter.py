@@ -103,6 +103,59 @@ def test_retries_exhausted_raises():
         m("hi")
 
 
+# ----------------------------------------------------------------- socket-read errors
+# Regression: a "connection reset by peer" raised mid-read is an OSError, not a
+# URLError, and previously escaped the retry loop and killed long sweeps.
+
+
+class _ReadErrResp:
+    """A urlopen context manager whose read() raises a socket-level error."""
+
+    def __init__(self, body=None, fail_times=0, counter=None):
+        self._body = body
+        self._fail_times = fail_times
+        self._counter = counter if counter is not None else {"n": 0}
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+    def read(self):
+        self._counter["n"] += 1
+        if self._counter["n"] <= self._fail_times:
+            raise ConnectionResetError(54, "Connection reset by peer")
+        return self._body
+
+
+def test_http_post_wraps_connection_reset_as_retryable(monkeypatch):
+    from agent_eval_harness import model as model_mod
+
+    monkeypatch.setattr(
+        model_mod.urllib.request, "urlopen",
+        lambda req, timeout=None: _ReadErrResp(fail_times=1),
+    )
+    m = OpenRouterModel("x/y", api_key="sk-test")
+    with pytest.raises(OpenRouterError) as ei:
+        m._http_post({"model": "x/y", "messages": []})
+    assert ei.value.retryable is True
+
+
+def test_connection_reset_is_retried_then_succeeds(monkeypatch):
+    from agent_eval_harness import model as model_mod
+
+    counter = {"n": 0}
+    body = json.dumps(_chat_response('{"action":"hold"}')).encode("utf-8")
+    monkeypatch.setattr(
+        model_mod.urllib.request, "urlopen",
+        lambda req, timeout=None: _ReadErrResp(body=body, fail_times=2, counter=counter),
+    )
+    m = OpenRouterModel("x/y", api_key="sk-test", max_retries=5, backoff_base=0.0)
+    assert parse(m("hi")).action == "hold"
+    assert counter["n"] == 3  # two resets retried, third read succeeds
+
+
 # ----------------------------------------------------------------- on_error degradation
 
 

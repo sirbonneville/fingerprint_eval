@@ -1,0 +1,14 @@
+CONDITION : baseline
+MODEL     : openai/gpt-4o
+MEMORY    : off (stateless)
+RUNS (N)  : 2
+
+HEADLINE BEHAVIOR (median [IQR], min..max, n):
+  trade_count          1 [0]   1..1   n=2
+  hold_rate            0.8 [0]   0.8..0.8   n=2
+  total_volume         333.3 [0]   333.3..333.3   n=2
+  median_trade_size    333.3 [0]   333.3..333.3   n=2
+  first_trade_frac     0.25 [0]   0.25..0.25   n=2
+  direction_switches   0 [0]   0..0   n=2
+  outcomes_traded      1 [0]   1..1   n=2
+  n_rejected           0 [0]   0..0   n=2

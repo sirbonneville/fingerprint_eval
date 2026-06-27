@@ -1,0 +1,12 @@
+{
+  "model": "openai/gpt-4o",
+  "memory": "off",
+  "metric": "discovery_rank_score",
+  "easy_discovery": 1.0,
+  "hard_discovery": 1.0,
+  "margin": 0.05,
+  "passed": false,
+  "trusted": true,
+  "note": "Calibration FAILED: probe did not discover the easy control. The instrument is not measuring configs yet -- stop and fix the probe.",
+  "calib_n": 10
+}

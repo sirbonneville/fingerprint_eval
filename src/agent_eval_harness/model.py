@@ -15,6 +15,7 @@ environment variable and is never logged.
 
 from __future__ import annotations
 
+import http.client
 import json
 import os
 import random
@@ -259,6 +260,13 @@ class OpenRouterModel:
             )
         except urllib.error.URLError as exc:  # network/DNS/timeout
             raise OpenRouterError("OpenRouter network error: %s" % exc, retryable=True)
+        except (http.client.HTTPException, ConnectionError, TimeoutError, OSError) as exc:
+            # Socket-level errors raised DURING the streaming read (e.g. "connection
+            # reset by peer", incomplete chunked read) are not URLErrors and would
+            # otherwise escape unretried and kill a long sweep. They are transient --
+            # make them retryable so the backoff loop handles them. (URLError, an
+            # OSError subclass, is already handled above, so this won't shadow it.)
+            raise OpenRouterError("OpenRouter connection error: %s" % exc, retryable=True)
         except json.JSONDecodeError as exc:
             raise OpenRouterError("OpenRouter returned non-JSON: %s" % exc, retryable=False)
 
