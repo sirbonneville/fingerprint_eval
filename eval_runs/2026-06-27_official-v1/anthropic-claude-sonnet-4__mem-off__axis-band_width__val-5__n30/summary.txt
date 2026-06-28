@@ -1,0 +1,16 @@
+CONDITION : band_width = 5
+MODEL     : anthropic/claude-sonnet-4
+MEMORY    : off (stateless)
+RUNS (N)  : 30
+
+HEADLINE BEHAVIOR (median [IQR], min..max, n):
+  trade_count          3 [1]   2..4   n=30
+  hold_rate            0.4 [0.2]   0.2..0.6   n=30
+  total_volume         633.3 [196]   500..1576   n=30
+  median_trade_size    250 [104.2]   166.7..333.3   n=30
+  first_trade_frac     0.25 [0]   0..0.25   n=30
+  direction_switches   1 [0]   0..2   n=30
+  outcomes_traded      1 [0]   1..2   n=30
+  n_rejected           0 [0]   0..0   n=30
+
+CALIBRATION (record-only): easy=1 hard=1 passed=False

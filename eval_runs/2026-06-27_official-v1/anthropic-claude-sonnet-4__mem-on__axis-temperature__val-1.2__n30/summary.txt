@@ -1,0 +1,16 @@
+CONDITION : temperature = 1.2
+MODEL     : anthropic/claude-sonnet-4
+MEMORY    : on (rationale replayed)
+RUNS (N)  : 30
+
+HEADLINE BEHAVIOR (median [IQR], min..max, n):
+  trade_count          3 [1]   1..5   n=30
+  hold_rate            0.4 [0.2]   0..0.8   n=30
+  total_volume         918.4 [333.9]   333.3..1960   n=30
+  median_trade_size    250 [100]   150..390.1   n=30
+  first_trade_frac     0.25 [0.25]   0..0.25   n=30
+  direction_switches   1 [2]   0..3   n=30
+  outcomes_traded      1 [1]   1..2   n=30
+  n_rejected           0 [0]   0..0   n=30
+
+CALIBRATION (record-only): easy=1 hard=1 passed=False
