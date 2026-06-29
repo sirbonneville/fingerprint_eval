@@ -1,4 +1,4 @@
-# Prediction-Market Agent Evaluation — Project Summary
+# **fingerprint-eval: Isolating Model-Driven Behavior in a Controlled Prediction-Market Instrument**
 
 *A controlled instrument for measuring how an LLM actually behaves when it trades inside a specific kind of Delphi prediction market and what changes that behavior.*
 
@@ -105,7 +105,6 @@ Holding everything fixed, the two models are two stable, fingerprint-able trader
   - rarely changes its mind. 
   - It bets *exactly* a third of its budget ($333.33) about 63% of the  
   time, like a default it falls back on.
-
 - **claude-sonnet-4**: Active and diversified: 
   - more trades
   - smaller situational stakes
@@ -140,7 +139,7 @@ Comparing the two batteries refines that picture: several effects that looked li
 
 - The gpt-reacts-to-market / claude-reacts-to-memory split
 - Gpt's exact-$333 anchor
-- and the band-width-over-volatility ordering. 
+- and the band-width-over-volatility ordering.
 
 The two-personality finding held across both batteries; these did not. Turning the board live also moved gpt's unbiased discovery from above-chance toward chance (matched-seed, p ≤ 0.003) while leaving claude roughly unchanged. That result is still confounded, because the synthetic flow correlates with the readable price line: a decorrelated-flow run is what would separate the two (this is proposed as a v3 battery, see the `v3_decorrelated_flow_spec.md`).
 
