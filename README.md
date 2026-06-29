@@ -1,4 +1,4 @@
-# agent_eval_harness
+# fingerprint_eval
 
 A **controlled instrument** for studying how LLMs behave as traders in synthetic
 Delphi-style price-bucket prediction markets. The harness runs many episodes under
