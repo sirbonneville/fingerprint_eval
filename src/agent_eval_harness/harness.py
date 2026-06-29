@@ -102,6 +102,7 @@ def run_episode(
     seed: Optional[int] = None,
     memory: bool = False,
     disclose_dead_window: bool = True,
+    noise_flow=None,
 ) -> EpisodeLog:
     """Run one full episode and return its log + footprint.
 
@@ -113,6 +114,16 @@ def run_episode(
     settlement schedule -- how long after close the settlement price is recorded --
     so the model can perceive the post-close dead window the way a real Delphi
     agent does. False hides it (the older, settlement-blind prompt).
+
+    ``noise_flow`` (default None) is the SYNTHETIC TRADER FLOW -- the single
+    difference between the v1 and v2 batteries. When None the loop is exactly the
+    v1 sole-trader episode. When given (a :class:`~agent_eval_harness.synthetic.
+    SyntheticFlow` callable), it is invoked once per turn AFTER the clock advances
+    and BEFORE the model trades, moving the implied-probability board through the
+    same ``apply_trade`` under a separate address. The model perceives the moved
+    board IMPLICITLY -- only the probability numbers in the prompt change; the
+    template is byte-identical. It cannot alter the price path or winning band
+    (those are generated up front), so the v1/v2 comparison stays seed-matched.
     """
     dead_window_min = path.knowability_window_min() if disclose_dead_window else None
     wallet = Wallet.with_budget(starting_cash)
@@ -126,8 +137,13 @@ def run_episode(
     total_turns = len(trading_pts)
     for turn_index, (t, _price) in enumerate(trading_pts, start=1):
         market.set_time(t)
-        state = market.current_state()
         visible = path.prices_up_to(t)
+        # SYNTHETIC FLOW (v2 only): move the board on the same information the model
+        # has (revealed prices), BEFORE reading the state the prompt is built from,
+        # so the model sees the moved odds. No-op for v1 (noise_flow is None).
+        if noise_flow is not None:
+            noise_flow(market, visible)
+        state = market.current_state()
 
         prompt = build_prompt(
             settlement_rule=market.settlement_rule_text(),

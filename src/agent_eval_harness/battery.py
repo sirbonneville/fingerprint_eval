@@ -380,6 +380,11 @@ def run_battery(args) -> int:
     battery = select_battery(args)
     n = args.n
 
+    # v2 synthetic-trader flow (None = v1 sole-trader control) + episode concurrency.
+    from .synthetic import NoiseConfig
+    synthetic_config = NoiseConfig() if getattr(args, "synthetic_traders", False) else None
+    max_workers = max(1, int(getattr(args, "concurrency", 1) or 1))
+
     # Session folder. Deterministic when a --label is given (date + label), so a
     # re-run the same day RESUMES the same session rather than forking a new one.
     # --resume <path> reuses an explicit existing session regardless of date.
@@ -415,6 +420,10 @@ def run_battery(args) -> int:
         "git_commit": commit,
         "battery": [[a, list(vs)] for a, vs in battery],
         "metric_names": list(METRIC_NAMES),
+        # The single arm-defining difference + the (result-neutral) perf setting.
+        "synthetic_traders": synthetic_config is not None,
+        "synthetic_config": dataclasses.asdict(synthetic_config) if synthetic_config else None,
+        "concurrency": max_workers,
     }
     _write_manifest(manifest_path, manifest)
 
@@ -424,7 +433,8 @@ def run_battery(args) -> int:
         for mem in mem_conditions:
             base = build_base_cell(args, memory=mem)
             calibration = _run_and_store_calibration(
-                session, model, mem, base, factory, args, dry_run
+                session, model, mem, base, factory, args, dry_run,
+                synthetic_config=synthetic_config, max_workers=max_workers,
             )
             for axis, values in battery:
                 for value in values:
@@ -447,7 +457,10 @@ def run_battery(args) -> int:
                     os.makedirs(folder, exist_ok=True)
                     cell = build_cell(base, axis, value)
                     t0 = time.time()
-                    result = run_cell(cell, factory, n_runs=n, store_logs=True)
+                    result = run_cell(
+                        cell, factory, n_runs=n, store_logs=True,
+                        synthetic_config=synthetic_config, max_workers=max_workers,
+                    )
                     elapsed = (time.time() - t0) / 60.0
 
                     # Write artifacts.
@@ -461,6 +474,7 @@ def run_battery(args) -> int:
                         "git_commit": commit,
                         "label": label,
                         "dry_run": dry_run,
+                        "synthetic_traders": synthetic_config is not None,
                     }
                     config = _config_dict(cell, meta)
                     chash = _config_hash(config)
@@ -506,7 +520,8 @@ def run_battery(args) -> int:
     return 0
 
 
-def _run_and_store_calibration(session, model, mem, base, factory, args, dry_run):
+def _run_and_store_calibration(session, model, mem, base, factory, args, dry_run,
+                               synthetic_config=None, max_workers=1):
     """Run the control pair ONCE per (model, memory); record-only (never gates)."""
     if not args.calibrate:
         return None
@@ -518,7 +533,8 @@ def _run_and_store_calibration(session, model, mem, base, factory, args, dry_run
         except (OSError, ValueError):  # pragma: no cover
             pass
     cal = run_calibration(
-        base, factory, n_runs=args.calib_n, trust_discovery=not dry_run
+        base, factory, n_runs=args.calib_n, trust_discovery=not dry_run,
+        synthetic_config=synthetic_config, max_workers=max_workers,
     )
     payload = {
         "model": model,
@@ -620,6 +636,15 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--settlement-rule", dest="settlement_rule", default=None)
     p.add_argument("--temperature", type=float, default=0.7)
     p.add_argument("--max-tokens", dest="max_tokens", type=int, default=512)
+
+    # v2 treatment + performance (neither changes any v1 result):
+    p.add_argument("--synthetic-traders", dest="synthetic_traders", action="store_true",
+                   help="V2 ARM: add synthetic ('noise') trader flow so the board is "
+                        "live between turns. Off = the v1 sole-trader control.")
+    p.add_argument("--concurrency", type=int, default=1,
+                   help="episodes to run CONCURRENTLY per cell (bound under the API "
+                        "rate limit). Determinism-preserving: only execution order "
+                        "changes, never an episode's seeded inputs.")
 
     # money-band market (Delphi-style)
     p.add_argument("--mid", type=float, default=None)

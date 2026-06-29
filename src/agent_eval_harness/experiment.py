@@ -243,46 +243,102 @@ class CellResult:
 METRIC_NAMES = tuple(_METRIC_EXTRACTORS.keys())
 
 
+def run_one_episode(
+    cell: CellConfig,
+    model_factory: ModelFactory,
+    run: int,
+    store_logs: bool = False,
+    synthetic_config: "Optional[object]" = None,
+) -> RunRecord:
+    """Run a single episode (seed = ``run``) and return its record.
+
+    Everything is built fresh and seeded from ``run`` -- market, price path, model,
+    and (when ``synthetic_config`` is given) the synthetic-trader flow -- so an
+    episode's INPUTS depend only on ``run``, never on execution order. That is what
+    lets :func:`run_cell` run episodes concurrently without changing any result.
+    """
+    market = cell.build_market()
+    path = cell.build_path(seed=run)
+    model = model_factory(cell, run)
+    noise_flow = None
+    if synthetic_config is not None:
+        # Imported lazily so the v1 path carries no dependency on the v2 module.
+        from .synthetic import SyntheticFlow
+        noise_flow = SyntheticFlow(
+            seed=run,  # SAME per-episode seed as the price path -> seed-matched arms
+            n_outcomes=cell.n_outcomes,
+            band_width=cell.band_width,
+            config=synthetic_config,
+            n_turns=len(path.trading_points()),  # pace flow across the whole episode
+        )
+    log = run_episode(
+        market,
+        model,
+        path,
+        starting_cash=cell.starting_cash,
+        token=cell.token,
+        seed=run,
+        memory=cell.memory,
+        disclose_dead_window=cell.disclose_dead_window,
+        noise_flow=noise_flow,
+    )
+    disc = compute_discovery(
+        log.closing_probabilities,
+        log.winning_outcome,
+        log.opening_probabilities,
+        closing_position=log.closing_position,
+    )
+    return RunRecord(
+        run=run,
+        footprint=log.footprint,
+        discovery=disc,
+        winning_outcome=log.winning_outcome,
+        pnl=log.pnl,
+        log=log if store_logs else None,
+    )
+
+
 def run_cell(
     cell: CellConfig,
     model_factory: ModelFactory,
     n_runs: int = 10,
     store_logs: bool = False,
+    synthetic_config: "Optional[object]" = None,
+    max_workers: int = 1,
 ) -> CellResult:
-    """Run one cell N times (seed = run index) and summarize the distribution."""
+    """Run one cell N times (seed = run index) and summarize the distribution.
+
+    ``synthetic_config`` (a :class:`~agent_eval_harness.synthetic.NoiseConfig`)
+    turns on the v2 synthetic-trader flow; ``None`` is the v1 sole-trader control.
+
+    ``max_workers`` > 1 runs the N episodes concurrently in a bounded thread pool.
+    The episodes are latency-bound (each turn is one blocking API call), so threads
+    overlap the network waits. Determinism is preserved: each episode's inputs are
+    seeded from its run index alone, so concurrency only changes execution ORDER --
+    records are re-sorted by run index before summarizing, giving results identical
+    to the serial run.
+    """
     if n_runs < 1:
         raise ValueError("n_runs must be >= 1")
-    records: List[RunRecord] = []
-    for run in range(n_runs):
-        market = cell.build_market()
-        path = cell.build_path(seed=run)
-        model = model_factory(cell, run)
-        log = run_episode(
-            market,
-            model,
-            path,
-            starting_cash=cell.starting_cash,
-            token=cell.token,
-            seed=run,
-            memory=cell.memory,
-            disclose_dead_window=cell.disclose_dead_window,
-        )
-        disc = compute_discovery(
-            log.closing_probabilities,
-            log.winning_outcome,
-            log.opening_probabilities,
-            closing_position=log.closing_position,
-        )
-        records.append(
-            RunRecord(
-                run=run,
-                footprint=log.footprint,
-                discovery=disc,
-                winning_outcome=log.winning_outcome,
-                pnl=log.pnl,
-                log=log if store_logs else None,
-            )
-        )
+
+    if max_workers and max_workers > 1 and n_runs > 1:
+        from concurrent.futures import ThreadPoolExecutor
+
+        records: List[RunRecord] = []
+        with ThreadPoolExecutor(max_workers=min(max_workers, n_runs)) as pool:
+            futures = [
+                pool.submit(run_one_episode, cell, model_factory, run, store_logs, synthetic_config)
+                for run in range(n_runs)
+            ]
+            for fut in futures:
+                records.append(fut.result())
+        records.sort(key=lambda r: r.run)  # determinism: order by seed, not finish time
+    else:
+        records = [
+            run_one_episode(cell, model_factory, run, store_logs, synthetic_config)
+            for run in range(n_runs)
+        ]
+
     metrics = {
         name: summarize([extract(r) for r in records])
         for name, extract in _METRIC_EXTRACTORS.items()
@@ -376,11 +432,15 @@ def run_calibration(
     margin: float = 0.05,
     trust_discovery: bool = False,
     metric: str = "discovery_rank_score",
+    synthetic_config: "Optional[object]" = None,
+    max_workers: int = 1,
 ) -> CalibrationResult:
     """Run the control pair and judge whether the probe discovers easy >> hard."""
     easy_cell, hard_cell = control_pair(base)
-    easy = run_cell(easy_cell, model_factory, n_runs=n_runs)
-    hard = run_cell(hard_cell, model_factory, n_runs=n_runs)
+    easy = run_cell(easy_cell, model_factory, n_runs=n_runs,
+                    synthetic_config=synthetic_config, max_workers=max_workers)
+    hard = run_cell(hard_cell, model_factory, n_runs=n_runs,
+                    synthetic_config=synthetic_config, max_workers=max_workers)
     easy_disc = easy.median(metric) or 0.0
     hard_disc = hard.median(metric) or 0.0
     passed = easy_disc > hard_disc + margin

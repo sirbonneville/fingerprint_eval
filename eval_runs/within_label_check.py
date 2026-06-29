@@ -86,7 +86,7 @@ def within_label(eps):
 
 
 def main():
-    session = sys.argv[1] if len(sys.argv) > 1 else "2026-06-27_official-v1"
+    session = sys.argv[1] if len(sys.argv) > 1 else "battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1"
     model = sys.argv[2] if len(sys.argv) > 2 else "openai-gpt-4o"
     mem = sys.argv[3] if len(sys.argv) > 3 else "off"
     here = os.path.dirname(os.path.abspath(__file__))

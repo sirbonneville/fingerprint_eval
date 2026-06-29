@@ -425,7 +425,7 @@ def check_within_label(session, mem, model=CLA):
 
 
 def main():
-    session = sys.argv[1] if len(sys.argv) > 1 else "2026-06-27_official-v1"
+    session = sys.argv[1] if len(sys.argv) > 1 else "battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1"
     mem = sys.argv[2] if len(sys.argv) > 2 else "off"
     here = os.path.dirname(os.path.abspath(__file__))
     session = os.path.join(here, session)

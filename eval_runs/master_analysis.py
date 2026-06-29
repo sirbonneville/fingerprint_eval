@@ -318,7 +318,10 @@ def section_win_decomp(session):
 
 
 def main():
-    session = sys.argv[1] if len(sys.argv) > 1 else "2026-06-27_official-v1"
+    # Session path is relative to this script's dir. Defaults to the frozen
+    # no-synth-trading arm; pass any battery's session dir to analyze the other
+    # arm, e.g. battery_WITH_SYNTH_TRADING/<session>.
+    session = sys.argv[1] if len(sys.argv) > 1 else "battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1"
     here = os.path.dirname(os.path.abspath(__file__))
     session = os.path.join(here, session)
     print("\nMASTER ANALYSIS  session=%s  N_PERM=%d\n" % (os.path.basename(session), N_PERM))
