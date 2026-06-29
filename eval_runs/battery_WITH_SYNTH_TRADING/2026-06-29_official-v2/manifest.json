@@ -1259,6 +1259,1086 @@
       },
       "calibration_passed": false,
       "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-volatility__val-1__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 1.0,
+      "n": 30,
+      "config_hash": "931bfe08a7a4f8d4",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1051.6996552632354,
+          "iqr": 213.55756512488995
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 62.499999999999886
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-volatility__val-1.5__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 1.5,
+      "n": 30,
+      "config_hash": "11d55e3680c3bad4",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1069.56391406565,
+          "iqr": 190.4546334330181
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 50.00000000000017
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-volatility__val-2__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "volatility",
+      "value": 2.0,
+      "n": 30,
+      "config_hash": "bf3f893a28a71a70",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1002.54327481983,
+          "iqr": 257.8173486723175
+        },
+        "median_trade_size": {
+          "median": 250.00000000000006,
+          "iqr": 85.97124999999971
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-temperature__val-0__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "temperature",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "4154b8f5192cfdd9",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1043.3719499722638,
+          "iqr": 265.2655785581238
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 50.000000000000085
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-temperature__val-0.7__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "temperature",
+      "value": 0.7,
+      "n": 30,
+      "config_hash": "6bea80496bf6bddc",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 962.7903836169411,
+          "iqr": 359.1459779437505
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999983
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-temperature__val-1.2__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "temperature",
+      "value": 1.2,
+      "n": 30,
+      "config_hash": "bef393ed17dcae89",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1022.1793705470824,
+          "iqr": 271.27700947063477
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 74.99999999999983
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-knowability_min__val-0__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "knowability_min",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "1dffe15b3527138f",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1047.7920799880208,
+          "iqr": 309.6996392779562
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 62.49999999999994
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-knowability_min__val-60__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "knowability_min",
+      "value": 60.0,
+      "n": 30,
+      "config_hash": "f20d42433f864baf",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1000.0000000000002,
+          "iqr": 164.8525215911866
+        },
+        "median_trade_size": {
+          "median": 249.99999999999983,
+          "iqr": 49.999999999999915
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-knowability_min__val-120__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "knowability_min",
+      "value": 120.0,
+      "n": 30,
+      "config_hash": "75e66d2f9a64502e",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1081.0506225041422,
+          "iqr": 226.87797791404648
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999966
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-band_width__val-5__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "band_width",
+      "value": 5.0,
+      "n": 30,
+      "config_hash": "d7469ee0bc26cdda",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 982.129313910609,
+          "iqr": 312.50965039689106
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 62.49999999999994
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-off__axis-band_width__val-20__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "off",
+      "axis": "band_width",
+      "value": 20.0,
+      "n": 30,
+      "config_hash": "0894c51c4a2c89b3",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1069.56391406565,
+          "iqr": 198.7443020128893
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 62.499999999999886
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-baseline__val-default__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "baseline",
+      "value": null,
+      "n": 30,
+      "config_hash": "e10dea2b60e87c7d",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1050.7453022591246,
+          "iqr": 285.41153193485616
+        },
+        "median_trade_size": {
+          "median": 250.00000000000014,
+          "iqr": 99.99999999999983
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-volatility__val-0.5__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 0.5,
+      "n": 30,
+      "config_hash": "672a9e3a40b50089",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 892.605715496791,
+          "iqr": 374.68733627149743
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999983
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 2.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-volatility__val-1__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 1.0,
+      "n": 30,
+      "config_hash": "e129abaebe40d878",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.25
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.04999999999999999
+        },
+        "total_volume": {
+          "median": 955.5026359477633,
+          "iqr": 214.37077162725438
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999989
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 1.0,
+          "iqr": 2.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-volatility__val-1.5__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 1.5,
+      "n": 30,
+      "config_hash": "99be65dbfe4126c6",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1000.0000000000002,
+          "iqr": 149.65531241822214
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 52.92941622345583
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-volatility__val-2__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "volatility",
+      "value": 2.0,
+      "n": 30,
+      "config_hash": "60cd6eaf865b520d",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 1000.0000000000002,
+          "iqr": 253.46434113437965
+        },
+        "median_trade_size": {
+          "median": 287.49999999999983,
+          "iqr": 50.00000000000006
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-temperature__val-0__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "temperature",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "ca64247445c0ed7d",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.25
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.0
+        },
+        "total_volume": {
+          "median": 950.5931859477632,
+          "iqr": 323.2339807854945
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.9999999999996
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 1.5,
+          "iqr": 2.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-temperature__val-0.7__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "temperature",
+      "value": 0.7,
+      "n": 30,
+      "config_hash": "a011cc63d6adfdf9",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 1035.4136541122693,
+          "iqr": 202.79820592686394
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999955
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-temperature__val-1.2__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "temperature",
+      "value": 1.2,
+      "n": 30,
+      "config_hash": "cb52e237b9d8b773",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 0.25
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.04999999999999999
+        },
+        "total_volume": {
+          "median": 1000.0000000000001,
+          "iqr": 323.7628285704633
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999966
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-knowability_min__val-0__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "knowability_min",
+      "value": 0.0,
+      "n": 30,
+      "config_hash": "b2912c25615992e5",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 1000.0,
+          "iqr": 264.80500000000006
+        },
+        "median_trade_size": {
+          "median": 250.0000000000002,
+          "iqr": 65.3807336071362
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-knowability_min__val-60__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "knowability_min",
+      "value": 60.0,
+      "n": 30,
+      "config_hash": "4f566fc2406356ce",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 1000.0000000000003,
+          "iqr": 202.37758999401126
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999977
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-knowability_min__val-120__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "knowability_min",
+      "value": 120.0,
+      "n": 30,
+      "config_hash": "a489b2c17d697e45",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 1000.0000000000007,
+          "iqr": 201.4956877646664
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 99.99999999999972
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-band_width__val-5__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "band_width",
+      "value": 5.0,
+      "n": 30,
+      "config_hash": "943c7762007e9315",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.2
+        },
+        "total_volume": {
+          "median": 1000.0000000000001,
+          "iqr": 231.51476256482783
+        },
+        "median_trade_size": {
+          "median": 250.0,
+          "iqr": 75.72774294938944
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.25
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 0.25
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
+    },
+    {
+      "folder": "anthropic-claude-sonnet-4__mem-on__axis-band_width__val-20__n30",
+      "model": "anthropic/claude-sonnet-4",
+      "memory": "on",
+      "axis": "band_width",
+      "value": 20.0,
+      "n": 30,
+      "config_hash": "71a0bbf93a535495",
+      "headline": {
+        "trade_count": {
+          "median": 4.0,
+          "iqr": 1.0
+        },
+        "hold_rate": {
+          "median": 0.2,
+          "iqr": 0.04999999999999999
+        },
+        "total_volume": {
+          "median": 989.9999999999998,
+          "iqr": 359.38358222991417
+        },
+        "median_trade_size": {
+          "median": 250.00000000000006,
+          "iqr": 99.99999999999966
+        },
+        "first_trade_frac": {
+          "median": 0.0,
+          "iqr": 0.0
+        },
+        "direction_switches": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "outcomes_traded": {
+          "median": 2.0,
+          "iqr": 1.0
+        },
+        "n_rejected": {
+          "median": 0.0,
+          "iqr": 0.0
+        }
+      },
+      "calibration_passed": false,
+      "status": "complete"
     }
   ],
   "session": {
@@ -1271,7 +2351,7 @@
     "memory": "both",
     "n": 30,
     "dry_run": false,
-    "git_commit": "a0966c0b6f3e5f3fd3a46b31ee519b8c07bf568d",
+    "git_commit": "501d08b0ff39c461bea7369a6beac8a89d7e0275",
     "battery": [
       [
         "baseline",
@@ -1347,6 +2427,19 @@
     "concurrency": 10,
     "ignore_providers": [
       "azure"
-    ]
+    ],
+    "byok_only": false,
+    "provider_routing": {
+      "openai/gpt-4o": {
+        "ignore": [
+          "azure"
+        ]
+      },
+      "anthropic/claude-sonnet-4": {
+        "ignore": [
+          "azure"
+        ]
+      }
+    }
   }
 }

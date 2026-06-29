@@ -357,18 +357,34 @@ def select_battery(args):
 
 # --------------------------------------------------------------- factories
 
+def _provider_routing(model: str, args) -> Optional[dict]:
+    """Build the OpenRouter ``provider`` routing object for a model.
+
+    ``--byok-only`` pins the model to its first-party provider (the vendor in the
+    slug, e.g. ``anthropic/claude-...`` -> ``anthropic``). With ``only`` set,
+    OpenRouter uses your BYOK key for that provider and never silently falls back
+    to a different provider (Bedrock/Vertex/Azure) billed to OpenRouter credits;
+    if your key is rate-limited the request fails loudly instead. ``--ignore-providers``
+    is the softer alternative (just exclude named providers, keep fallbacks).
+    """
+    if getattr(args, "byok_only", False):
+        vendor = model.split("/", 1)[0].strip().lower()
+        if vendor:
+            return {"only": [vendor]}
+    ignore = [p.strip() for p in (getattr(args, "ignore_providers", "") or "").split(",") if p.strip()]
+    if ignore:
+        return {"ignore": ignore}
+    return None
+
+
 def _make_factory(model: str, args, dry_run: bool) -> Callable:
     if dry_run:
         return default_stand_in_factory
-    provider = None
-    ignore = [p.strip() for p in (getattr(args, "ignore_providers", "") or "").split(",") if p.strip()]
-    if ignore:
-        provider = {"ignore": ignore}
     return openrouter_factory(
         model,
         temperature=args.temperature,
         max_tokens=args.max_tokens,
-        provider=provider,
+        provider=_provider_routing(model, args),
     )
 
 
@@ -434,6 +450,8 @@ def run_battery(args) -> int:
         "synthetic_config": dataclasses.asdict(synthetic_config) if synthetic_config else None,
         "concurrency": max_workers,
         "ignore_providers": [p.strip() for p in (getattr(args, "ignore_providers", "") or "").split(",") if p.strip()],
+        "byok_only": bool(getattr(args, "byok_only", False)),
+        "provider_routing": {m: _provider_routing(m, args) for m in models},
     }
     _write_manifest(manifest_path, manifest)
 
@@ -649,6 +667,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--ignore-providers", dest="ignore_providers", default="",
                    help="comma-separated OpenRouter provider slugs to exclude "
                         "(e.g. 'azure' to route around Azure's content filter)")
+    p.add_argument("--byok-only", dest="byok_only", action="store_true",
+                   help="pin each model to its first-party provider via "
+                        "provider.only (e.g. anthropic/openai) so requests use "
+                        "your BYOK key and never silently fall back to a "
+                        "credit-billed provider. Fails loudly if your key is "
+                        "rate-limited rather than falling back.")
 
     # v2 treatment + performance (neither changes any v1 result):
     p.add_argument("--synthetic-traders", dest="synthetic_traders", action="store_true",

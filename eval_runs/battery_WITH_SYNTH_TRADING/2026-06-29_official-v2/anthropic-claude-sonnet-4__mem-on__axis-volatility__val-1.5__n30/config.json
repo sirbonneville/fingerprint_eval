@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "model": "anthropic/claude-sonnet-4",
+    "memory": true,
+    "axis": "volatility",
+    "value": 1.5,
+    "n": 30,
+    "timestamp": "2026-06-29T13:13:19.224167",
+    "git_commit": "501d08b0ff39c461bea7369a6beac8a89d7e0275",
+    "label": "official-v2",
+    "dry_run": false,
+    "synthetic_traders": true,
+    "config_hash": "99be65dbfe4126c6"
+  },
+  "cell_config": {
+    "volatility": 1.5,
+    "knowability_min": 0.0,
+    "band_width": 10.0,
+    "anchor": 100.0,
+    "n_outcomes": 3,
+    "hours": 2.0,
+    "interval_min": 30.0,
+    "drift": 0.0,
+    "k": 10.0,
+    "fee": 0.02,
+    "initial_shares": 100.0,
+    "starting_cash": 1000.0,
+    "price_model": "arithmetic",
+    "temperature": 0.7,
+    "memory": true,
+    "disclose_dead_window": true,
+    "token": "ZQX",
+    "settlement_rule_text": "Settles to the band containing the asset's price at the settlement reference.",
+    "band_edges_override": null,
+    "label_overrides": null,
+    "label": "volatility=1.5"
+  }
+}
