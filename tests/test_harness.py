@@ -5,14 +5,14 @@ import re
 
 import pytest
 
-from agent_eval_harness.action import parse
-from agent_eval_harness.dpm import MarketConfig, PriceBucketMarket
-from agent_eval_harness.harness import AGENT_ADDRESS, run_episode
-from agent_eval_harness.market import MarketState, Order
-from agent_eval_harness.model import HoldModel, RandomTrader, ScriptedModel
-from agent_eval_harness.prompt import build_prompt
-from agent_eval_harness.price_path import generate_path
-from agent_eval_harness.wallet import Wallet, plan_order
+from fingerprint_eval.action import parse
+from fingerprint_eval.dpm import MarketConfig, PriceBucketMarket
+from fingerprint_eval.harness import AGENT_ADDRESS, run_episode
+from fingerprint_eval.market import MarketState, Order
+from fingerprint_eval.model import HoldModel, RandomTrader, ScriptedModel
+from fingerprint_eval.prompt import build_prompt
+from fingerprint_eval.price_path import generate_path
+from fingerprint_eval.wallet import Wallet, plan_order
 
 
 def make_market(trading_close_min=120.0):

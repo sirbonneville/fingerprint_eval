@@ -12,7 +12,7 @@ import statistics
 
 import pytest
 
-from agent_eval_harness.price_path import (
+from fingerprint_eval.price_path import (
     MODEL_ARITHMETIC,
     MODEL_GBM,
     generate_path,

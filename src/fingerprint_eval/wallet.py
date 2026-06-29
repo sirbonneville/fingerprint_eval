@@ -3,7 +3,7 @@
 Per the Piece-2 decisions: the market is pure pricing + positions and never sees
 cash. The wallet lives here in the harness and owns the budget, affordability,
 and the notional->shares conversion. The model's notional action is turned into a
-share-denominated :class:`~agent_eval_harness.market.Order` here, using the
+share-denominated :class:`~fingerprint_eval.market.Order` here, using the
 market's pure cost-curve quotes.
 
 Conventions chosen for v1 (clean, observable behavior; easy to revisit):

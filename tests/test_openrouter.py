@@ -10,8 +10,8 @@ import os
 
 import pytest
 
-from agent_eval_harness.action import parse
-from agent_eval_harness.model import (
+from fingerprint_eval.action import parse
+from fingerprint_eval.model import (
     OpenRouterError,
     OpenRouterModel,
     openrouter_factory,
@@ -147,7 +147,7 @@ class _ReadErrResp:
 
 
 def test_http_post_wraps_connection_reset_as_retryable(monkeypatch):
-    from agent_eval_harness import model as model_mod
+    from fingerprint_eval import model as model_mod
 
     monkeypatch.setattr(
         model_mod.urllib.request, "urlopen",
@@ -160,7 +160,7 @@ def test_http_post_wraps_connection_reset_as_retryable(monkeypatch):
 
 
 def test_connection_reset_is_retried_then_succeeds(monkeypatch):
-    from agent_eval_harness import model as model_mod
+    from fingerprint_eval import model as model_mod
 
     counter = {"n": 0}
     body = json.dumps(_chat_response('{"action":"hold"}')).encode("utf-8")
@@ -204,7 +204,7 @@ def test_factory_seeds_per_run_and_builds_models():
 
 
 def test_load_dotenv_sets_missing_keys_only(tmp_path, monkeypatch):
-    from agent_eval_harness.cli import load_dotenv
+    from fingerprint_eval.cli import load_dotenv
 
     env = tmp_path / ".env"
     env.write_text(
@@ -222,14 +222,14 @@ def test_load_dotenv_sets_missing_keys_only(tmp_path, monkeypatch):
 
 
 def test_load_dotenv_missing_file_is_noop():
-    from agent_eval_harness.cli import load_dotenv
+    from fingerprint_eval.cli import load_dotenv
 
     assert load_dotenv("definitely-not-a-real-file.env") is False
 
 
 def test_factory_runs_a_full_episode_offline():
     # End-to-end: a scripted OpenRouter transport drives a real episode.
-    from agent_eval_harness.experiment import CellConfig, run_cell
+    from fingerprint_eval.experiment import CellConfig, run_cell
 
     def transport(payload):
         return _chat_response('{"action":"buy","outcome":2,"size":40,"rationale":"bull"}')

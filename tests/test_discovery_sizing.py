@@ -7,7 +7,7 @@ metric must score them equally when both pick the winner.
 
 import pytest
 
-from agent_eval_harness.metrics import compute_discovery
+from fingerprint_eval.metrics import compute_discovery
 
 UNIFORM = [1 / 3, 1 / 3, 1 / 3]
 

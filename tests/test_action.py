@@ -1,6 +1,6 @@
 """Tests for the action parser -- robustness is the point (never raise)."""
 
-from agent_eval_harness.action import parse
+from fingerprint_eval.action import parse
 
 
 def test_parses_clean_json():

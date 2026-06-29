@@ -21,10 +21,10 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
 
-from agent_eval_harness.experiment import CellConfig  # noqa: E402
-from agent_eval_harness.harness import run_episode  # noqa: E402
-from agent_eval_harness.model import HoldModel  # noqa: E402
-from agent_eval_harness.synthetic import NoiseConfig, SyntheticFlow, IntervalReport  # noqa: E402
+from fingerprint_eval.experiment import CellConfig  # noqa: E402
+from fingerprint_eval.harness import run_episode  # noqa: E402
+from fingerprint_eval.model import HoldModel  # noqa: E402
+from fingerprint_eval.synthetic import NoiseConfig, SyntheticFlow, IntervalReport  # noqa: E402
 
 
 def baseline_cell(band_width: float = 10.0) -> CellConfig:

@@ -623,7 +623,7 @@ def _dump_json(path: str, obj: object) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="agent_eval_harness.battery",
+        prog="fingerprint_eval.battery",
         description="Run an official, organized, resumable evaluation battery.",
     )
     p.add_argument("--models", default=None,

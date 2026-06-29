@@ -10,7 +10,7 @@ import math
 
 import pytest
 
-from agent_eval_harness.dpm import (
+from fingerprint_eval.dpm import (
     buy_cost,
     collateral,
     implied_probabilities,

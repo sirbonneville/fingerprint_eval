@@ -2,14 +2,14 @@
 
 from dataclasses import replace
 
-from agent_eval_harness.experiment import (
+from fingerprint_eval.experiment import (
     METRIC_NAMES,
     SWEEPABLE_AXES,
     CellConfig,
     default_stand_in_factory,
     run_grid,
 )
-from agent_eval_harness.model import HoldModel, openrouter_factory
+from fingerprint_eval.model import HoldModel, openrouter_factory
 
 
 def _base_cell(**kw) -> CellConfig:

@@ -1,4 +1,4 @@
-# Prediction-Market Agent-Evaluation Harness — Build Spec (v1)
+# fingerprint_eval — Build Spec (v1)
 
 ## What this is
 

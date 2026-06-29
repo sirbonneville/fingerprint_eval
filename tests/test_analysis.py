@@ -8,7 +8,7 @@ it finds anything (a stand-in finds nothing by construction).
 
 import pytest
 
-from agent_eval_harness.analysis import (
+from fingerprint_eval.analysis import (
     PLUMBING_BANNER,
     V_NO_EFFECT,
     V_NO_VARIATION,
@@ -22,7 +22,7 @@ from agent_eval_harness.analysis import (
     pairwise_effect,
     range_overlap_fraction,
 )
-from agent_eval_harness.experiment import CellConfig, default_stand_in_factory, run_grid
+from fingerprint_eval.experiment import CellConfig, default_stand_in_factory, run_grid
 
 
 # ----------------------------------------------------------------- effect-size primitives

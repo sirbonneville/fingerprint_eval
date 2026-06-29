@@ -28,7 +28,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
 
-from agent_eval_harness.dpm import math as dpm  # noqa: E402
+from fingerprint_eval.dpm import math as dpm  # noqa: E402
 
 K = 10.0
 SEED_Q = [100.0, 100.0, 100.0]

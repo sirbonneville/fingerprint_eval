@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent_eval_harness"
+name = "fingerprint_eval"
 version = "0.1.0"
-description = "Prediction-market agent-evaluation harness (DPM core)"
+description = "Controlled prediction-market fingerprint instrument (DPM core)"
 requires-python = ">=3.9"
 dependencies = []
 
@@ -13,7 +13,7 @@ dependencies = []
 dev = ["pytest>=7.0"]
 
 [project.scripts]
-agent-eval-harness = "agent_eval_harness.cli:main"
+fingerprint-eval = "fingerprint_eval.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

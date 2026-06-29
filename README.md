@@ -1,4 +1,4 @@
-# agent_eval_harness
+# fingerprint_eval
 
 A **controlled instrument** for studying how LLMs behave as traders in synthetic
 Delphi-style price-bucket prediction markets. The harness runs many episodes under
@@ -42,7 +42,7 @@ two memory conditions (52 cells × 30 episodes = 1,560 episodes per battery).
 
 ```bash
 git clone <repo-url>
-cd agent_eval_harness
+cd fingerprint_eval
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
@@ -58,13 +58,15 @@ cp .env.example .env
 ### Smoke test (one API call)
 
 ```bash
-PYTHONPATH=src python3 -m agent_eval_harness.cli --ping
+python3 -m fingerprint_eval --ping
 ```
+
+*(After `pip install -e ".[dev]"`, `PYTHONPATH=src` is not required.)*
 
 ### Single-axis sweep
 
 ```bash
-PYTHONPATH=src python3 -m agent_eval_harness.cli \
+python3 -m fingerprint_eval \
   --model openai/gpt-4o \
   --axis volatility \
   --values 0.5,1.0,1.5,2.0 \
@@ -74,7 +76,7 @@ PYTHONPATH=src python3 -m agent_eval_harness.cli \
 ### Full battery (resumable)
 
 ```bash
-PYTHONPATH=src python3 -m agent_eval_harness.battery \
+PYTHONPATH=src python3 -m fingerprint_eval.battery \
   --models openai/gpt-4o,anthropic/claude-sonnet-4 \
   --label official-v1 \
   --memory both \
@@ -86,7 +88,7 @@ PYTHONPATH=src python3 -m agent_eval_harness.battery \
 between turns:
 
 ```bash
-PYTHONPATH=src python3 -m agent_eval_harness.battery \
+PYTHONPATH=src python3 -m fingerprint_eval.battery \
   --models openai/gpt-4o,anthropic/claude-sonnet-4 \
   --label official-v2 \
   --synthetic-traders \
@@ -106,14 +108,14 @@ PYTHONPATH=src python3 eval_runs/calibration_gate.py
 **Dry run** (no API calls; deterministic stand-in model):
 
 ```bash
-PYTHONPATH=src python3 -m agent_eval_harness.battery \
+PYTHONPATH=src python3 -m fingerprint_eval.battery \
   --dry-run --models offline-stand-in --label smoke --n 2
 ```
 
 Resume a crashed battery into the same session folder:
 
 ```bash
-PYTHONPATH=src python3 -m agent_eval_harness.battery \
+PYTHONPATH=src python3 -m fingerprint_eval.battery \
   --resume eval_runs/battery_WITH_SYNTH_TRADING/2026-06-29_official-v2 \
   --models openai/gpt-4o,anthropic/claude-sonnet-4 \
   --synthetic-traders --memory both --n 30
@@ -160,8 +162,8 @@ analysis helpers all have unit tests under `tests/`.
 ## Repository layout
 
 ```
-agent_eval_harness/
-├── src/agent_eval_harness/     # Core package
+fingerprint_eval/
+├── src/fingerprint_eval/     # Core package
 │   ├── market.py               # DPM price-bucket market
 │   ├── price_path.py           # Seeded random-walk generator
 │   ├── harness.py              # Episode loop (turns, prompts, trades)

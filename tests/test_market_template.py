@@ -2,14 +2,14 @@
 
 import pytest
 
-from agent_eval_harness.experiment import run_cell
-from agent_eval_harness.market_template import (
+from fingerprint_eval.experiment import run_cell
+from fingerprint_eval.market_template import (
     band_labels_money,
     format_money,
     money_band_market,
     settlement_rules_text,
 )
-from agent_eval_harness.model import HoldModel
+from fingerprint_eval.model import HoldModel
 
 
 def test_format_money():

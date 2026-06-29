@@ -5,14 +5,14 @@ import math
 
 import pytest
 
-from agent_eval_harness.dpm import (
+from fingerprint_eval.dpm import (
     MarketConfig,
     Order,
     PriceBucketMarket,
     shares_for_buy_spend,
     shares_for_sell_proceeds,
 )
-from agent_eval_harness.market import Market, MarketState, OutcomeInfo
+from fingerprint_eval.market import Market, MarketState, OutcomeInfo
 
 SQRT7 = math.sqrt(7.0)
 
@@ -88,7 +88,7 @@ def test_time_to_close_tracks_the_clock():
 def test_buy_spend_inversion_round_trips(fee, spend):
     q = [3.0, 1.0, 7.0, 2.0]
     k = 2.5
-    from agent_eval_harness.dpm import buy_cost
+    from fingerprint_eval.dpm import buy_cost
 
     shares = shares_for_buy_spend(q, k, j=1, spend=spend, fee=fee)
     assert shares > 0.0
@@ -104,7 +104,7 @@ def test_known_buy_spend_inversion():
 
 @pytest.mark.parametrize("fee", [0.0, 0.02])
 def test_sell_proceeds_inversion_round_trips(fee):
-    from agent_eval_harness.dpm import sell_proceeds
+    from fingerprint_eval.dpm import sell_proceeds
 
     q = [2.0, 1.0, 1.0, 1.0]
     target = sell_proceeds(q, k=1.0, j=0, delta=0.5, fee=fee)

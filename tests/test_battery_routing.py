@@ -2,7 +2,7 @@
 
 from argparse import Namespace
 
-from agent_eval_harness.battery import _provider_routing
+from fingerprint_eval.battery import _provider_routing
 
 
 def _args(**kw):

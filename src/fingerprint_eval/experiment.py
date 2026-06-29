@@ -308,7 +308,7 @@ def run_cell(
 ) -> CellResult:
     """Run one cell N times (seed = run index) and summarize the distribution.
 
-    ``synthetic_config`` (a :class:`~agent_eval_harness.synthetic.NoiseConfig`)
+    ``synthetic_config`` (a :class:`~fingerprint_eval.synthetic.NoiseConfig`)
     turns on the v2 synthetic-trader flow; ``None`` is the v1 sole-trader control.
 
     ``max_workers`` > 1 runs the N episodes concurrently in a bounded thread pool.

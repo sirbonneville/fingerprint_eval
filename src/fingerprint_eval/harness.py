@@ -1,7 +1,7 @@
 """The market-agnostic harness loop (spec.md piece 4).
 
-Drives a :class:`~agent_eval_harness.market.Market` with a model over a
-:class:`~agent_eval_harness.price_path.PricePath`, logging the FULL prompt and
+Drives a :class:`~fingerprint_eval.market.Market` with a model over a
+:class:`~fingerprint_eval.price_path.PricePath`, logging the FULL prompt and
 response for every timestep (line one -- this is the whole dataset and exactly
 what an REE replay needs), then settles against the path's reference price and
 computes the run's behavioral footprint.
@@ -117,7 +117,7 @@ def run_episode(
 
     ``noise_flow`` (default None) is the SYNTHETIC TRADER FLOW -- the single
     difference between the v1 and v2 batteries. When None the loop is exactly the
-    v1 sole-trader episode. When given (a :class:`~agent_eval_harness.synthetic.
+    v1 sole-trader episode. When given (a :class:`~fingerprint_eval.synthetic.
     SyntheticFlow` callable), it is invoked once per turn AFTER the clock advances
     and BEFORE the model trades, moving the implied-probability board through the
     same ``apply_trade`` under a separate address. The model perceives the moved

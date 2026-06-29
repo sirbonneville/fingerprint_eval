@@ -10,11 +10,11 @@ These lock the guarantees that make the v1-vs-v2 comparison valid:
 
 import dataclasses
 
-from agent_eval_harness.dpm.market import DEFAULT_TRADER
-from agent_eval_harness.experiment import CellConfig, run_cell, run_one_episode
-from agent_eval_harness.harness import run_episode
-from agent_eval_harness.model import HoldModel
-from agent_eval_harness.synthetic import (
+from fingerprint_eval.dpm.market import DEFAULT_TRADER
+from fingerprint_eval.experiment import CellConfig, run_cell, run_one_episode
+from fingerprint_eval.harness import run_episode
+from fingerprint_eval.model import HoldModel
+from fingerprint_eval.synthetic import (
     NOISE_ADDRESS,
     NoiseConfig,
     SyntheticFlow,

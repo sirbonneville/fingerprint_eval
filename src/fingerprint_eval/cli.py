@@ -7,11 +7,11 @@ never logged.
 Examples
 --------
     export OPENROUTER_API_KEY=sk-or-...
-    python -m agent_eval_harness --model openai/gpt-4o-mini --axis volatility \
+    python -m fingerprint_eval --model openai/gpt-4o-mini --axis volatility \
         --values 0.1,0.5,2.0 --n 10
 
     # quick connectivity check (one call), no sweep:
-    python -m agent_eval_harness --model openai/gpt-4o-mini --ping
+    python -m fingerprint_eval --model openai/gpt-4o-mini --ping
 """
 
 from __future__ import annotations
@@ -120,7 +120,7 @@ def _ping(args) -> int:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
-        prog="agent_eval_harness",
+        prog="fingerprint_eval",
         description="Run the prediction-market agent-evaluation instrument.",
     )
     parser.add_argument("--model", default=None,

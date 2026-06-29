@@ -8,7 +8,7 @@ stand-in models -- that waits for a real model behind the Model protocol.
 
 import pytest
 
-from agent_eval_harness.experiment import (
+from fingerprint_eval.experiment import (
     CellConfig,
     control_pair,
     default_stand_in_factory,
@@ -18,7 +18,7 @@ from agent_eval_harness.experiment import (
     run_grid,
     summarize,
 )
-from agent_eval_harness.model import HoldModel, RandomTrader
+from fingerprint_eval.model import HoldModel, RandomTrader
 
 
 def base_cell():

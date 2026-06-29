@@ -4,8 +4,8 @@ import math
 
 import pytest
 
-from agent_eval_harness.dpm import MarketConfig, Order, PriceBucketMarket
-from agent_eval_harness.dpm.market import CREATOR_ADDRESS
+from fingerprint_eval.dpm import MarketConfig, Order, PriceBucketMarket
+from fingerprint_eval.dpm.market import CREATOR_ADDRESS
 
 SQRT7 = math.sqrt(7.0)
 
