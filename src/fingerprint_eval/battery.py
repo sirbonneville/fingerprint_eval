@@ -431,8 +431,22 @@ def run_battery(args) -> int:
 
     commit = git_commit()
     total = len(models) * len(mem_conditions) * sum(len(vs) for _, vs in battery)
-    print("BATTERY: %d cells -> %s" % (total, session))
-    print("  models=%s  memory=%s  N=%d  dry_run=%s\n" % (models, args.memory, n, dry_run))
+    from .console import BatteryUI
+
+    ui = BatteryUI(plain=getattr(args, "plain", False))
+    ui.banner(
+        total=total,
+        session=session,
+        models=models,
+        memory=args.memory,
+        n=n,
+        dry_run=dry_run,
+        synthetic=synthetic_config is not None,
+        concurrency=max_workers,
+    )
+
+    ran_cells = 0
+    skipped_cells = 0
 
     # Record the battery plan up front (so the index exists even before runs).
     manifest["session"] = {
@@ -474,7 +488,8 @@ def run_battery(args) -> int:
                     )
 
                     if _cell_complete(folder, n):
-                        print("%s ... SKIP (already complete)" % prefix)
+                        ui.cell_skip(prefix)
+                        skipped_cells += 1
                         if folder_name not in done_folders:
                             _index_existing(manifest, folder, folder_name, model, mem,
                                              axis, value, n)
@@ -484,6 +499,7 @@ def run_battery(args) -> int:
 
                     os.makedirs(folder, exist_ok=True)
                     cell = build_cell(base, axis, value)
+                    ui.cell_running(prefix)
                     t0 = time.time()
                     result = run_cell(
                         cell, factory, n_runs=n, store_logs=True,
@@ -539,12 +555,16 @@ def run_battery(args) -> int:
                     done_folders.add(folder_name)
                     _write_manifest(manifest_path, manifest)
 
-                    print("%s ... %d/%d runs, calib %s, done (%.1f min)" % (
-                        prefix, n, n, _calib_status(calibration), elapsed,
-                    ))
+                    ui.cell_done(prefix, _calib_status(calibration), elapsed)
+                    ran_cells += 1
 
-    print("\nBATTERY COMPLETE: %s" % session)
-    print("Index: %s" % manifest_path)
+    ui.complete(
+        session=session,
+        manifest_path=manifest_path,
+        ran=ran_cells,
+        skipped=skipped_cells,
+        total=total,
+    )
     return 0
 
 
@@ -646,6 +666,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="runs per control cell (default 10)")
     p.add_argument("--dry-run", action="store_true",
                    help="offline stand-in model (no API calls); validates plumbing/structure")
+    p.add_argument("--plain", action="store_true",
+                   help="plain text output (no color/boxes; also set NO_COLOR=1)")
     p.add_argument("--env-file", dest="env_file", default=".env")
 
     # frozen base-cell knobs (identical across the battery unless that knob is swept)

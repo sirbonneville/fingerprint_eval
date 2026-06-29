@@ -11,9 +11,13 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
+cli = ["rich>=13.0"]
 
 [project.scripts]
 fingerprint-eval = "fingerprint_eval.cli:main"
+
+[tool.setuptools.package-data]
+fingerprint_eval = ["brand_data/*.json"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

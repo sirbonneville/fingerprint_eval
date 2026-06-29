@@ -121,30 +121,107 @@ PYTHONPATH=src python3 -m fingerprint_eval.battery \
   --synthetic-traders --memory both --n 30
 ```
 
+Add `--plain` for CI/log-friendly output (no color or Rich panels). Respect `NO_COLOR=1`.
+
+### Branded terminal UI (Gensyn dashboard-dark)
+
+Battery progress uses a TUI skin derived from the [Gensyn brand manifest](https://brand.gensyn.ai/brand/manifest.json) (`dashboard-dark`: Deep Brown `#230800`, Gensyn Pink `#fad7d1`, retro stat panels). Theme tokens live in `src/fingerprint_eval/brand_data/dashboard-dark.json`.
+
+```bash
+pip install -e ".[cli]"   # optional: Rich panels (falls back to ANSI, then plain)
+python3 -m fingerprint_eval.battery --dry-run --models offline-stand-in --label smoke --n 2
+python3 -m fingerprint_eval.battery --plain --dry-run ...   # CI / logs
+```
+
+Refresh the bundled theme from the live manifest:
+
+```bash
+PYTHONPATH=src python3 eval_runs/refresh_brand_theme.py --write
+```
+
 ---
 
-## Analysis (read-only)
+## Recompute the findings from raw data
 
-Analysis scripts live under `eval_runs/` and consume completed battery output. They do
-not call models.
+**This is the payoff.** Every completed battery cell writes full episode logs to
+`runs.jsonl`. The analysis scripts read those logs only — **no model calls, no API
+cost, no writes** — and **recompute from scratch** the statistics, permutation
+p-values, and cross-tables that the findings documents are built on.
 
-| Script | Purpose |
+If you have the battery data on disk, you can reproduce (or audit) the narrative in
+[`battery_docs/`](battery_docs/) and [`summary_docs/`](summary_docs/) yourself. Point
+the same script at **any session folder** (v1 frozen board, v2 live board, or a future
+battery) and it grinds through all 52 cells × 30 episodes.
+
+### `master_analysis.py` — the main report
+
+The primary digest. Aggregates every cell in a session and prints six sections in
+order (this is what you see scrolling in the terminal):
+
+| Section | What it recomputes |
 |---|---|
-| `master_analysis.py` | Personality fingerprints, memory effects, axis sweeps, permutation floors |
-| `knob_diagnostics.py` | Discovery, knowability ceiling, within-label checks |
-| `within_label_check.py` | Response to realized price range within a fixed label |
-| `board_reaction.py` | Board-movement tracking (v2 only) |
-| `allin_check.py` | All-in attempt rates and direction |
-| `calibration_gate.py` | Synthetic-flow calibration before v2 runs |
-| `depth_table.py` | Market liquidity / conviction-unit tables |
-| `_audit.py` / `_phase2.py` | Independent cross-battery audit reducers |
+| **A. PERSONALITY** | Pooled behavioral fingerprint per model × memory (trade count, hold rate, volume, sizing, …) across all 13 core axis cells |
+| **B. NOISE FLOOR** | Spread across four **config-identical** draws (baseline = vol 1.0 = know 0 = temp 0.7). Any claimed axis or memory effect must beat this spread |
+| **C. MEMORY EFFECT** | mem-on vs mem-off, pooled; gap and two-sided permutation *p* (20k shuffles). `<== sig` when *p* < 0.05 |
+| **D. AXIS SWEEPS** | Each knob (volatility, temperature, knowability, band width): metric series + endpoint permutation test per model × memory |
+| **E. DISCOVERY** | GPT vs Claude on `top_pick`, `peak_top_pick`, `buy_flow` — the discovery story lives here |
+| **F. WIN DECOMPOSITION** | Splits win into commitment (`P(held)`) vs conditional accuracy (`P(win\|held)`) |
 
-Example:
+**v1 (frozen board)** — default session; same data as `findings_without_synthetic_trading.md`:
 
 ```bash
 PYTHONPATH=src python3 eval_runs/master_analysis.py \
-  eval_runs/battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1
+  battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1
 ```
+
+**v2 (live board)** — same structure, different arm; compare to `findings_with_synth_trading.md`:
+
+```bash
+PYTHONPATH=src python3 eval_runs/master_analysis.py \
+  battery_WITH_SYNTH_TRADING/2026-06-29_official-v2
+```
+
+Session paths are **relative to `eval_runs/`** (where the script lives). Omit the
+argument to use the v1 default.
+
+```bash
+PYTHONPATH=src python3 eval_runs/master_analysis.py          # v1 default
+PYTHONPATH=src python3 eval_runs/master_analysis.py --plain  # no branded header
+```
+
+**Runtime:** Section D runs ~96 permutation tests at 20,000 shuffles each, so output
+appears in chunks with pauses — that is normal CPU work, not network I/O. Sections A
+and B print quickly; C, D, and E are the slow parts.
+
+**Data source:** each line in `runs.jsonl` is one full episode (every turn, footprint,
+positions). The script never reads pre-aggregated `metrics.json` for its core stats —
+it recomputes from episodes so you are looking at the same ground truth the write-ups
+used.
+
+---
+
+## Other analysis commands (read-only)
+
+All scripts live under `eval_runs/`, take a session path where noted, and consume
+completed battery output only.
+
+| Script | What it does | Example |
+|---|---|---|
+| `master_analysis.py` | **Full six-section report** (above) — start here | `python3 eval_runs/master_analysis.py battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1` |
+| `knob_diagnostics.py` | Knowability ceiling, top_pick scorability, volatility within-label adjudication | `python3 eval_runs/knob_diagnostics.py battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1 off` |
+| `within_label_check.py` | Response to realized price range within a fixed band label | `python3 eval_runs/within_label_check.py battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1 openai-gpt-4o off` |
+| `board_reaction.py` | Does the model track live board drift? (**v2 only**) | `python3 eval_runs/board_reaction.py battery_WITH_SYNTH_TRADING/2026-06-29_official-v2` |
+| `allin_check.py` | All-in attempt rates v1 vs v2 (hardcoded session pair; pass model/mem) | `python3 eval_runs/allin_check.py openai-gpt-4o off 0.9` |
+| `depth_table.py` | Market liquidity / conviction-unit tables | `python3 eval_runs/depth_table.py` |
+| `calibration_gate.py` | Synthetic-flow sanity checks **before** launching v2 (offline stand-in) | `python3 eval_runs/calibration_gate.py` |
+| `_audit.py` | Independent Phase 1 reducer — recomputes metrics without importing other analysis scripts | `python3 eval_runs/_audit.py` |
+| `_phase2.py` | Phase 2 cross-battery deliverables (matched-seed v1↔v2) | `python3 eval_runs/_phase2.py` |
+| `refresh_brand_theme.py` | Update bundled Gensyn dashboard-dark theme from manifest | `python3 eval_runs/refresh_brand_theme.py --write` |
+
+The `_audit.py` / `_phase2.py` pair is what backs
+[`summary_docs/battery_comparison_v1_vs_v2.md`](summary_docs/battery_comparison_v1_vs_v2.md)
+— deliberately **does not import** `master_analysis` so agreement between the two
+pipelines is a real cross-check, not a shared bug.
 
 ---
 
@@ -208,8 +285,8 @@ Start here for the narrative; drill into specs and raw data as needed.
 |---|---|
 | [`summary_docs/final_summary.md`](summary_docs/final_summary.md) | Executive overview: instrument, both batteries, headline findings |
 | [`summary_docs/battery_comparison_v1_vs_v2.md`](summary_docs/battery_comparison_v1_vs_v2.md) | Independent audit + matched-seed v1↔v2 comparison (three-bucket framework) |
-| [`battery_docs/findings_without_synthetic_trading.md`](battery_docs/findings_without_synthetic_trading.md) | v1 (frozen board) full findings |
-| [`battery_docs/findings_with_synth_trading.md`](battery_docs/findings_with_synth_trading.md) | v2 (live board) full findings |
+| [`battery_docs/findings_without_synthetic_trading.md`](battery_docs/findings_without_synthetic_trading.md) | v1 (frozen board) full findings — **recomputable via `master_analysis.py` on the v1 session** |
+| [`battery_docs/findings_with_synth_trading.md`](battery_docs/findings_with_synth_trading.md) | v2 (live board) full findings — **recomputable via `master_analysis.py` on the v2 session** |
 | [`architectural_specs/spec.md`](architectural_specs/spec.md) | Original build spec and design principles |
 | [`architectural_specs/dpm_spec.md`](architectural_specs/dpm_spec.md) | DPM cost-function derivation and verification |
 | [`architectural_specs/v3_decorrelated_flow_spec.md`](architectural_specs/v3_decorrelated_flow_spec.md) | Proposed v3 battery (decorrelated synthetic flow) |

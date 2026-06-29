@@ -1,0 +1,27 @@
+{
+  "source": "https://brand.gensyn.ai/brand/manifest.json",
+  "manifestVersion": "1.3.1",
+  "ruleId": "data-dashboard",
+  "themeId": "dashboard-dark",
+  "updatedAt": "2026-06-10",
+  "colors": {
+    "background": "#230800",
+    "surface": "#171717",
+    "surfaceElevated": "#161210",
+    "surfaceMuted": "#1e1816",
+    "text": "#e5e5e5",
+    "textMuted": "#a3a3a3",
+    "accent": "#fad7d1",
+    "accentHover": "#f8c1b8",
+    "border": "#fad7d133",
+    "borderStrong": "#fad7d172",
+    "buttonText": "#0a0a0a",
+    "buttonBg": "#fad7d1",
+    "success": "#86efac",
+    "warning": "#fcd34d",
+    "error": "#f87171"
+  },
+  "typography": {
+    "ui": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+  }
+}

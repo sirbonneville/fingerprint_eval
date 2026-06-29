@@ -318,13 +318,32 @@ def section_win_decomp(session):
 
 
 def main():
-    # Session path is relative to this script's dir. Defaults to the frozen
-    # no-synth-trading arm; pass any battery's session dir to analyze the other
-    # arm, e.g. battery_WITH_SYNTH_TRADING/<session>.
-    session = sys.argv[1] if len(sys.argv) > 1 else "battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1"
+    import argparse
+
     here = os.path.dirname(os.path.abspath(__file__))
-    session = os.path.join(here, session)
-    print("\nMASTER ANALYSIS  session=%s  N_PERM=%d\n" % (os.path.basename(session), N_PERM))
+    default_session = "battery_WITHOUT_SYNTH_TRADING/2026-06-27_official-v1"
+    ap = argparse.ArgumentParser(description="Master analysis over a battery session")
+    ap.add_argument("session", nargs="?", default=default_session,
+                    help="session dir under eval_runs/ (default: v1 official)")
+    ap.add_argument("--plain", action="store_true", help="no branded header")
+    args = ap.parse_args()
+
+    session = os.path.join(here, args.session)
+    if not args.plain:
+        sys.path.insert(0, os.path.join(os.path.dirname(here), "src"))
+        try:
+            from fingerprint_eval.console import analysis_header
+
+            analysis_header(
+                "master analysis",
+                ["session: %s" % session, "N_PERM=%d" % N_PERM],
+                plain=False,
+            )
+        except ImportError:
+            print("\nMASTER ANALYSIS  session=%s  N_PERM=%d\n" % (os.path.basename(session), N_PERM))
+    else:
+        print("\nMASTER ANALYSIS  session=%s  N_PERM=%d\n" % (os.path.basename(session), N_PERM))
+
     section_personality(session)
     section_noise_floor(session)
     section_memory(session)
