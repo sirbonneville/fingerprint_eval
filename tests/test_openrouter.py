@@ -43,6 +43,23 @@ def test_returns_model_content_and_sends_expected_payload():
     assert captured["messages"][1]["content"] == "PROMPT TEXT"
 
 
+def test_provider_routing_omitted_by_default_and_included_when_set():
+    captured = {}
+
+    def transport(payload):
+        captured.update(payload)
+        return _chat_response('{"action":"hold","rationale":"ok"}')
+
+    # Default: no provider key (preserves v1-parity request shape).
+    OpenRouterModel("openai/gpt-4o", transport=transport)("P")
+    assert "provider" not in captured
+
+    captured.clear()
+    m = OpenRouterModel("openai/gpt-4o", transport=transport, provider={"ignore": ["azure"]})
+    m("P")
+    assert captured["provider"] == {"ignore": ["azure"]}
+
+
 def test_no_api_key_required_when_transport_injected():
     # Injected transport must not require OPENROUTER_API_KEY.
     m = OpenRouterModel("x/y", transport=lambda p: _chat_response("{}"))

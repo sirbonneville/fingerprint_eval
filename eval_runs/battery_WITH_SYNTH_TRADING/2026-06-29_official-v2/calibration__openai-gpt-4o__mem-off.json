@@ -1,0 +1,12 @@
+{
+  "model": "openai/gpt-4o",
+  "memory": "off",
+  "metric": "discovery_rank_score",
+  "easy_discovery": 1.0,
+  "hard_discovery": 0.5,
+  "margin": 0.05,
+  "passed": true,
+  "trusted": true,
+  "note": "Calibration passed: probe discovers the easy control more than the hard one.",
+  "calib_n": 10
+}

@@ -360,7 +360,16 @@ def select_battery(args):
 def _make_factory(model: str, args, dry_run: bool) -> Callable:
     if dry_run:
         return default_stand_in_factory
-    return openrouter_factory(model, temperature=args.temperature, max_tokens=args.max_tokens)
+    provider = None
+    ignore = [p.strip() for p in (getattr(args, "ignore_providers", "") or "").split(",") if p.strip()]
+    if ignore:
+        provider = {"ignore": ignore}
+    return openrouter_factory(
+        model,
+        temperature=args.temperature,
+        max_tokens=args.max_tokens,
+        provider=provider,
+    )
 
 
 # --------------------------------------------------------------- the battery
@@ -424,6 +433,7 @@ def run_battery(args) -> int:
         "synthetic_traders": synthetic_config is not None,
         "synthetic_config": dataclasses.asdict(synthetic_config) if synthetic_config else None,
         "concurrency": max_workers,
+        "ignore_providers": [p.strip() for p in (getattr(args, "ignore_providers", "") or "").split(",") if p.strip()],
     }
     _write_manifest(manifest_path, manifest)
 
@@ -636,6 +646,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--settlement-rule", dest="settlement_rule", default=None)
     p.add_argument("--temperature", type=float, default=0.7)
     p.add_argument("--max-tokens", dest="max_tokens", type=int, default=512)
+    p.add_argument("--ignore-providers", dest="ignore_providers", default="",
+                   help="comma-separated OpenRouter provider slugs to exclude "
+                        "(e.g. 'azure' to route around Azure's content filter)")
 
     # v2 treatment + performance (neither changes any v1 result):
     p.add_argument("--synthetic-traders", dest="synthetic_traders", action="store_true",

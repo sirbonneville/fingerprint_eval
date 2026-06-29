@@ -1,0 +1,16 @@
+CONDITION : knowability_min = 120
+MODEL     : openai/gpt-4o
+MEMORY    : on (rationale replayed)
+RUNS (N)  : 30
+
+HEADLINE BEHAVIOR (median [IQR], min..max, n):
+  trade_count          1 [1.25]   1..3   n=30
+  hold_rate            0.8 [0.25]   0.4..0.8   n=30
+  total_volume         500 [267]   250..1290   n=30
+  median_trade_size    374.5 [250]   172..500   n=30
+  first_trade_frac     0 [0]   0..0.25   n=30
+  direction_switches   0 [1]   0..2   n=30
+  outcomes_traded      1 [0]   1..2   n=30
+  n_rejected           0 [0]   0..0   n=30
+
+CALIBRATION (record-only): easy=1 hard=0.75 passed=True

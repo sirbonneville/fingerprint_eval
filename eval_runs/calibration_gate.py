@@ -27,10 +27,16 @@ from agent_eval_harness.model import HoldModel  # noqa: E402
 from agent_eval_harness.synthetic import NoiseConfig, SyntheticFlow, IntervalReport  # noqa: E402
 
 
-def baseline_cell() -> CellConfig:
-    """The frozen battery base cell -- identical to v1's (battery.py defaults)."""
+def baseline_cell(band_width: float = 10.0) -> CellConfig:
+    """The frozen battery base cell -- identical to v1's (battery.py defaults).
+
+    ``band_width`` defaults to the baseline (10.0); the core battery also sweeps it
+    to 5.0 and 20.0, which are DIFFERENT geometries (the band edges and -- because
+    the path is band-relative, vol_abs = volatility*band_width -- the price path
+    itself change), so the gate must be re-run for each.
+    """
     return CellConfig(
-        volatility=1.0, knowability_min=0.0, band_width=10.0,
+        volatility=1.0, knowability_min=0.0, band_width=band_width,
         anchor=100.0, n_outcomes=3, hours=2.0, interval_min=30.0, drift=0.0,
         k=10.0, fee=0.02, initial_shares=100.0, starting_cash=1000.0,
         temperature=0.7, memory=False, disclose_dead_window=True, token="ZQX",
@@ -88,14 +94,11 @@ def prompt_diff_only_probabilities(p1, p2):
     return (len(offending) == 0), offending
 
 
-def main():
-    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0
-    n_seeds = int(sys.argv[2]) if len(sys.argv) > 2 else 30
-    cell = baseline_cell()
-
-    print("=" * 74)
-    print("V2 SYNTHETIC-FLOW CALIBRATION GATE   base seed=%d  aggregate over %d seeds" % (seed, n_seeds))
-    print("base cell: vol=1.0 band_width=10 n=3 hours=2 interval=30 k=10 fee=0.02 budget=1000")
+def gate_for_cell(cell, label, seed, n_seeds):
+    """Run the four-check gate for one geometry; print a section, return all-pass."""
+    print("\n" + "=" * 74)
+    print("GEOMETRY: %s   (band_width=%g)   base seed=%d  aggregate over %d seeds"
+          % (label, cell.band_width, seed, n_seeds))
     print("=" * 74)
 
     # ----- detailed single episode (the "one episode" the gate asks for) -----
@@ -184,10 +187,36 @@ def main():
           % (path_match, v1_log.winning_outcome, v2_log.winning_outcome, band_match, settle_match,
              "PASS" if c4 else "FAIL"))
 
-    print("\n" + "=" * 74)
     allpass = c1 and c2 and c3 and c4
-    print("GATE: %s" % ("ALL CHECKS PASS -- v2 battery is safe to run." if allpass
-                        else "NOT ALL PASS -- tune NoiseConfig / fix before running the battery."))
+    print("  -> %s: %s" % (label, "PASS" if allpass else "FAIL"))
+    return allpass
+
+
+def main():
+    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+    n_seeds = int(sys.argv[2]) if len(sys.argv) > 2 else 30
+
+    print("=" * 74)
+    print("V2 SYNTHETIC-FLOW CALIBRATION GATE")
+    print("Run across EVERY geometry the core battery sweeps (band_width 10/5/20),")
+    print("not just baseline -- the noise band inference, momentum tilt, and the")
+    print("band-relative price path all change with band_width.")
+    print("=" * 74)
+
+    # The core battery's band_width geometries: baseline (10) + the two swept values.
+    geometries = [
+        ("baseline", baseline_cell(10.0)),
+        ("band_width=5", baseline_cell(5.0)),
+        ("band_width=20", baseline_cell(20.0)),
+    ]
+    results = [(label, gate_for_cell(cell, label, seed, n_seeds)) for label, cell in geometries]
+
+    print("\n" + "=" * 74)
+    allpass = all(ok for _, ok in results)
+    for label, ok in results:
+        print("  %-16s %s" % (label, "PASS" if ok else "FAIL"))
+    print("GATE: %s" % ("ALL GEOMETRIES PASS -- v2 battery is safe to run."
+                        if allpass else "NOT ALL PASS -- fix before running the battery."))
     print("=" * 74)
     return 0 if allpass else 1
 

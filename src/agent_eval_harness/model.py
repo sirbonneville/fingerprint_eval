@@ -166,6 +166,7 @@ class OpenRouterModel:
         referer: Optional[str] = None,
         title: Optional[str] = None,
         transport: Optional[Transport] = None,
+        provider: Optional[dict] = None,
     ):
         if on_error not in ("raise", "hold"):
             raise ValueError("on_error must be 'raise' or 'hold'")
@@ -175,6 +176,11 @@ class OpenRouterModel:
         self.max_tokens = max_tokens
         self.seed = seed
         self.system_prompt = system_prompt
+        # OpenRouter provider-routing object (e.g. {"ignore": ["azure"]}); merged
+        # into the request body when set. Used to route around a provider whose
+        # content filter blocks otherwise-benign prompts (a provider-policy
+        # artifact, not model behavior). None = OpenRouter's default routing.
+        self.provider = provider
         self.timeout = timeout
         self.max_retries = max_retries
         self.backoff_base = backoff_base
@@ -205,6 +211,8 @@ class OpenRouterModel:
         }
         if self.seed is not None:
             payload["seed"] = self.seed
+        if self.provider is not None:
+            payload["provider"] = self.provider
         try:
             response = self._complete(payload)
             return _extract_content(response)
