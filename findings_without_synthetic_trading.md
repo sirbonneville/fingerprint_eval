@@ -106,10 +106,20 @@ repetition under varied configs cannot be a coincidence of sampling.
 
 ## F2 — The sizing fingerprints (verified)
 
-- **gpt-4o anchors to budget/3.** **63%** of all gpt trades are *exactly* $333.33
-  (one-third of the 1000 budget); claude hits that value only **11%** of the time.
+- **gpt-4o anchors to budget/3.** A large share of gpt trades are *exactly* $333.33
+  (one-third of the 1000 budget) — **59% of all executed trades, 74% of buys only**
+  *(corrected — see note)*; claude hits that value **8%** of the time (all trades).
   gpt treats "bet a third" as a default action; claude sizes off round numbers
   (100/200/250/300) it picks per-situation.
+
+  > **Audit correction (2026-06-29):** the original text said "63%" (gpt) and "11%"
+  > (claude). Independent recomputation finds the $333.33 share is denominator-dependent:
+  > gpt is **59% over all executed trades** and **74% over buys only** (claude **8%**
+  > all-trades); the doc's 63% sits between the two natural denominators and does not
+  > reproduce exactly with either. The budget/3 **anchor is robust** regardless — if
+  > anything stronger: the per-cell *median-of-medians* trade size is **exactly $333.33
+  > in all 13 mem-off cells** (tighter than the "$6 band, $326.73–$333.33" stated just
+  > above). Only the precise percentage was a rounding/denominator artifact.
 - **Per-trade dispersion is similar** (size CV ≈ 0.46 both) — claude is not
   *more precise* per trade. But **claude's total run deployment is more
   consistent** (volume CV **0.33** vs gpt **0.56**), because it reliably makes ~3
@@ -295,6 +305,13 @@ Verdict: both models are genuinely above chance (real, if weak, discovery),
 **claude is marginally better (~+0.07)**, and `top_pick` is an unfair instrument
 for comparing trader types whose holding behavior differs.
 
+> **Cross-battery note** (`battery_comparison_v1_vs_v2.md`, audit 2026-06-29): v1 gpt's
+> above-chance discovery on these unbiased metrics was **confirmed independently** (~5 SE
+> over chance) and is **not** an artifact of v1 over-crediting. On the matched-seed v2
+> (live-board) battery it **collapses to chance** — an **environment-dependent
+> capability** (real on a frozen board, destroyed when the board moves), distinct from
+> both model-level traits and pure frozen-board artifacts like the $333.33 anchor.
+
 ## F9 — Replication-across-memory as a robustness axis
 
 Running both memory passes turned the memory condition into a free second test.
@@ -345,7 +362,8 @@ away from a test, not asserted here.**
 
 **Confirmed (robust):**
 - Two stable, distinct trader personalities; trait-level, config-invariant (F1).
-- gpt budget/3 sizing anchor (63%); claude free sizing + steadier total deployment (F2).
+- gpt budget/3 sizing anchor (59% all trades / 74% buys — see F2 audit note); claude
+  free sizing + steadier total deployment (F2).
 - Orthogonal sensitivity: gpt market-driven, claude memory-driven (F3).
 - Memory transforms claude (churner→accumulator); inert for gpt (F4). The win-rate
   gain is **commitment-mechanical** (held-rate rises, conditional accuracy flat),
@@ -371,6 +389,11 @@ away from a test, not asserted here.**
 - **Two models, one probe family, synthetic centered random-walk markets, single
   agent, N=30/cell.** In-frame these are real measurements; out-of-frame they are
   hypotheses.
+- **Cross-battery context:** a matched-seed v2 battery (live board) and independent audit
+  are documented in `battery_comparison_v1_vs_v2.md`. Key v1 findings that are *not*
+  model-level: the orthogonality 2×2, the $333.33 anchor, and the band_width axis
+  hierarchy. Key v1 finding that is *real but environment-dependent*: gpt's above-chance
+  unbiased discovery (F8) — genuine here, collapsed to chance when the board moves.
 - **Centered geometry caps the discovery axis** (F7): knowability and (in the
   martingale) drift have effects that are *unmeasurable by construction* here, not
   necessarily absent in real or non-centered markets.
@@ -397,3 +420,7 @@ away from a test, not asserted here.**
    more wins without picking any better — the win gain can be entirely mechanical.
    This is the same end-state-conditioning trap as the discovery-metric lesson (#3),
    and it bites outcome metrics just as hard.
+6. **Task competence can depend on the venue, not just the model** (cross-battery,
+   `battery_comparison_v1_vs_v2.md`): gpt's above-chance discovery here is real, but
+   it does not survive a live board — an environment-dependent capability, not a
+   durable model trait.
