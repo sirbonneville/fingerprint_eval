@@ -11,6 +11,26 @@ arithmetic volatility), gated behind the easy/hard calibration control pair.
 
 ---
 
+> **SUPERSEDED IN PART — see [`MASTER_FINDINGS.md`](MASTER_FINDINGS.md).** This
+> file is the *original single-model, N=10, settlement-blind* record. The official
+> two-model battery (`eval_runs/2026-06-27_official-v1/`, gpt-4o + claude-sonnet-4,
+> N=30, faithful prompt, mem-off & mem-on, 52 cells) re-measured every axis. The
+> master file is now the headline; reconciliation of the specific findings here:
+>
+> | this file | battery verdict |
+> |---|---|
+> | #1 sizing-independent discovery metric | upheld and extended — `top_pick` *also* found to be **survivorship-biased** across trader types (claude exits flat ~45%); added `peak_top_pick` / `buy_flow_on_winner` (master F8). |
+> | #2 entry-timing wording-frozen | upheld; entry-timing still excluded from attribution. |
+> | #3 knowability has no discovery gradient (martingale) | upheld and **deepened** — a *second* mechanism (target leaves the observable window; oracle ceiling 100%→60%) independently caps it. A candidate knowability→discovery drop was **withdrawn** (master F7). |
+> | #4 drift discovery confidence-confirmed/identity-inconclusive | unchanged (drift stays parked). |
+> | **#5 volatility drives engagement** | **DID NOT REPRODUCE.** Under the faithful prompt at N=30 the volatility *label* sweep is a behavioral **null** for both models; the N=10 monotonic trend did not survive. Rescued only in a weak within-label realized-range form for claude, mem-off (master F6). |
+> | **#6 temperature is a spread knob, not a center knob** | **PARTLY REVERSED.** Under the faithful prompt, temperature **does move gpt's activity center** (trade_count 1.20→1.80, p=0.006, mem-off; attenuates with memory). The *sizing* center stays pinned (~$340), so the refined read is "moves activity frequency, not stake size" (master F5). |
+> | new in battery | **band_width is the strongest, most robust market axis** (gpt, both memory conditions); **memory transforms claude but not gpt**; **orthogonal sensitivity** (gpt market-driven, claude memory-driven). |
+>
+> Read #5 and #6 below as the old-prompt baseline that the battery has now corrected.
+
+---
+
 ## The method (one discipline, applied five times)
 
 The findings below matter, but the *method* is the transferable thing, and it is
@@ -162,7 +182,7 @@ market-redesign question, deliberately chosen.
 > that prompt-dependence is itself a finding. Read #5/#6 below as the old-prompt
 > baseline pending that check.
 
-## 5. Volatility drives engagement (the first clean positive, behavior axis)  [OLD-PROMPT; superseded by battery]
+## 5. Volatility drives engagement (the first clean positive, behavior axis)  [OLD-PROMPT; DID NOT REPRODUCE in battery — see MASTER_FINDINGS F6]
 
 Sweeping volatility ∈ {0.5, 1.0, 1.5, 2.0} (k=0, drift=0, 3 bands, N=10), reading
 the **un-confounded behavioral footprint**. Four correlated activity metrics move
@@ -198,7 +218,7 @@ is a genuine finding and only DISCOVERY is ungated.
 
 ---
 
-## 6. Temperature is a spread knob, not a center knob (the model-side intervention)  [OLD-PROMPT; superseded by battery]
+## 6. Temperature is a spread knob, not a center knob (the model-side intervention)  [OLD-PROMPT; PARTLY REVERSED in battery — temperature moves gpt's activity center under the faithful prompt; see MASTER_FINDINGS F5]
 
 Sweeping temperature ∈ {0.0, 0.7, 1.2} (vol=1.5, k=0, drift=0, 3 bands, N=10),
 the first **model-side** intervention — the within-model analog of the
