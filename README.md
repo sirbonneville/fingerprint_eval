@@ -1,5 +1,8 @@
 # fingerprint_eval
 
+<img width="1536" height="768" alt="image" src="https://github.com/user-attachments/assets/cb06cde0-2f72-4a72-88f0-6ad2ac6a55f1" />
+
+
 A **controlled instrument** for studying how LLMs behave as traders in synthetic
 Delphi-style price-bucket prediction markets. The harness runs many episodes under
 fixed prompts, changes one market variable at a time, and reads the *distribution* of
