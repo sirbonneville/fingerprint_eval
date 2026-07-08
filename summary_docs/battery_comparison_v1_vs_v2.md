@@ -19,6 +19,13 @@ $50-multiple share depend on buys-only vs all executed trades). The headline of 
 comparison is one clean causal effect, one clean dissolution, and a third category that
 is easy to mislabel.
 
+> **Note (2026-07-08):** a later independent review found that the discovery results
+> below are measured against the wrong null (chance = 1/3 instead of a naive
+> price-follower baseline) and that the v2 "discovery collapse" is largely an
+> **entry-timing** effect triggered by a pre-turn-0 board tilt. The p-values and
+> numbers below all stand; their interpretation is revised. See the
+> **Addendum** at the end of this document before quoting the discovery claims.
+
 ### Three buckets — how to read v1↔v2
 
 **Model-level** (survives memory flip *and* environment flip): claude discovers the
@@ -413,6 +420,131 @@ board:
    winners more often? **Settle it** by conditioning the win gain on peak_top_pick vs
    held_rate — i.e., does the extra winning come from picking the winner more, or from
    holding whatever it picked through to settlement?
+
+---
+
+## Addendum (2026-07-08) — the chance floor was the wrong null; the collapse is an entry-timing effect
+
+*A second independent review, run after this document was finalized. Standalone
+read-only reducer: `eval_runs/_review_naive_baseline.py`. It regenerates every price
+path from `(cell config, seed)` and validates the reconstruction against the stored
+settlement price of every episode — **0 mismatches across all 3,120 episodes** — then
+computes counterfactual baselines against the raw `runs.jsonl`. Nothing in the Phase 1
+audit is overturned: every number in this document still reproduces. What changes is
+the interpretation of the discovery results, in one specific way.*
+
+### A1. The 0.333 floor is not the right null for buy_flow / peak_top_pick
+
+Every discovery claim above is tested against chance = 1/3. But the winning band is
+the band the settlement price lands in, and the price path is *observable*: a
+zero-skill strategy that buys whatever band the price is currently in is strongly
+correlated with the winner, increasingly so as the episode progresses. Averaged over
+all five decision points the current band matches the eventual winner **59.3%** of the
+time (identical in both arms — a property of the shared paths, and consistent with the
+knowability oracle ceiling of ~60% reported above).
+
+The decisive comparison is the naive current-band follower evaluated **on the exact
+same buys the model made** (same turns, same notional weights):
+
+| arm | model · mem | actual buy_flow | naive price-follower, same buys | unconditional per-turn |
+|---|---|---|---|---|
+| v1 | gpt · off | 0.487 | **0.508** | 0.593 |
+| v1 | gpt · on | 0.536 | **0.562** | 0.593 |
+| v1 | claude · off | 0.570 | **0.557** | 0.593 |
+| v1 | claude · on | 0.570 | **0.579** | 0.593 |
+| v2 | gpt · off | 0.362 | **0.341** | 0.593 |
+| v2 | gpt · on | 0.355 | **0.335** | 0.593 |
+| v2 | claude · off | 0.491 | **0.480** | 0.593 |
+| v2 | claude · on | 0.483 | **0.479** | 0.593 |
+
+(These are notional-weighted pooled ratios, not the per-episode means used elsewhere
+in this document, so the actual columns differ slightly from the tables above; the
+actual-vs-naive comparison is apples-to-apples within each row.)
+
+**Both models, both batteries, sit essentially at their timing-matched naive
+baseline** (residuals −0.03 to +0.02; gpt v1 is slightly *below* it). Neither model
+ever demonstrated band-picking skill beyond "buy the band the price is in now." The
+v1 "genuinely above chance, ≈5 SE over 0.333" reading is arithmetically correct, but
+0.333 is a null no price-reading trader would fail.
+
+### A2. What actually collapsed in v2: entry timing, not band-picking
+
+The naive baseline itself drops from ~0.51–0.56 (v1 gpt buys) to ~0.34 (v2 gpt buys).
+On seed-identical paths that can only mean the buys moved to different turns. They
+did — the share of buy notional placed at t=0:
+
+| arm | gpt · off | gpt · on | claude · off | claude · on |
+|---|---|---|---|---|
+| v1 | 16% | 12% | 16% | 11% |
+| v2 | **84%** | **82%** | **51%** | **44%** |
+
+At t=0 the price sits at the anchor, dead center of the middle band; no strategy can
+beat 1/3 there (empirically, t=0 buys hit the winner 23–31% in every arm × model ×
+memory cell). gpt front-loads almost everything to t=0 on the live board; claude
+front-loads half but keeps buying at t=60–90, where the current band is informative.
+That *is* the "gpt collapsed, claude survived" contrast of Deliverable B — explained
+almost entirely by timing.
+
+**The proximate trigger is a design wrinkle: synthetic flow trades before the model's
+first turn.** `opening_probabilities` are stored uniform, but the turn-0 prompt
+already shows a tilted board (e.g. 25.8/25.8/48.4). At t=0 the flow has seen only the
+anchor price, so that tilt is pure noise — yet gpt buys the tilted favorite at t=0
+**72%** of the time (n=372 mem-off / 370 mem-on t=0 buys). claude buys the middle band
+at t=0 100% of the time, ignoring the tilt, which preserves its late informative buys.
+The model's very first observation in v2 is a spurious signal; gpt anchors on it and
+commits immediately.
+
+### A3. Revisions to the buckets (what changes, what does not)
+
+- **Deliverable B (gating).** The *what* survives — the matched-seed drop is real and
+  the p-values stand. Both halves are reframed: the v1 "capability" was
+  timing-sensible price-following, not forecasting; and the degradation mechanism is
+  now substantially identified *within existing data* — the t=0 noise tilt induces
+  premature commitment at the one moment nothing is knowable. This partially answers
+  open questions #1 and #3 without the v3 run (the v3 decorrelated-flow experiment
+  remains the clean confirmation).
+- **Model-level bucket, claim 1 ("claude discovers better than gpt").** Weakened as a
+  *band-picking* claim: relative to timing-matched baselines the residual gap is small
+  (claude ≈ +0.01, gpt ≈ −0.02). The robust model-level trait is better stated as:
+  *claude distributes trades across the episode and resists spurious board tilts; gpt
+  concentrates its entry and anchors on them.* A timing/attention trait, not a
+  band-picking skill gap.
+- **Unchanged:** memory = commitment-not-accuracy (the win decomposition does not use
+  the chance floor); the two personalities; the $333.33 anchor dissolution; the
+  top_pick survivorship lesson; the knowability measurement ceiling (independently
+  corroborated by the 0.593 per-turn naive rate).
+- **Discovery 5 framing (literature doc).** "More live information can degrade
+  performance" becomes sharper and more specific: *a salient spurious signal at first
+  decision induces premature commitment in gpt-4o but not claude-sonnet-4* — closer to
+  the LLM anchoring-bias literature than to a generic information effect.
+
+### A4. Provenance and between-arm confounds (recorded, judged second-order)
+
+1. **v1's recorded git commit is wrong.** The manifest records `7a2182c`, but
+   `prompt.py` at that commit lacks the settlement-timing disclosure that v1's stored
+   prompts contain — v1 was run from a dirty working tree. The stored prompts are
+   ground truth and confirm template-identity across arms (turn-0 prompts differ only
+   in the board numbers), so no result changes; the provenance chain, however, is not
+   trustworthy on its own.
+2. **The arms differ by more than "board alive."** v1: no provider routing,
+   concurrency 1. v2: `ignore azure` routing, concurrency 10. The same model slug
+   served through different provider stacks can behave differently. Judged
+   second-order next to the timing effect, but "identical with one change" is not
+   strictly true.
+
+### A5. Recommendations for v3
+
+- Report every discovery metric as **skill-over-naive** (timing-matched
+  price-follower), not skill-over-1/3.
+- **Do not let synthetic flow act before turn 0** (or randomize its start), so the
+  model's first observation is not a pure-noise tilt — unless first-impression
+  anchoring is itself the object of study, in which case make it a deliberate axis.
+- Require a **clean git tree** for official runs; pin provider routing and
+  concurrency identically in both arms.
+
+*Reproduce the addendum: `PYTHONPATH=src python3 eval_runs/_review_naive_baseline.py`
+(standalone, read-only; validates path reconstruction against every stored settlement
+price before computing baselines).*
 
 ---
 

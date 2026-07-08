@@ -17,6 +17,16 @@ classical delisting kind, not a metric-conditioning selection effect). By the ru
 doc cites only genuinely convergent work, they are not listed. Dates and arXiv IDs are as
 listed on arXiv.*
 
+> **Revision (2026-07-08).** A later independent review (addendum in
+> `battery_comparison_v1_vs_v2.md`; reproducible via
+> `eval_runs/_review_naive_baseline.py`) revises **Discovery 3** and **Discovery 5**:
+> the 1/3 chance floor used for the discovery metrics is the wrong null (a naive
+> current-band price-follower scores ~0.59 per turn, and both models sit essentially
+> at that baseline in both batteries), and the v2 collapse is largely an entry-timing
+> effect triggered by a pure-noise board tilt the synthetic flow creates before the
+> model's first turn. Dated notes appear in those two sections below. Discoveries 1,
+> 2, 4, and 6 — including all three literature convergences — are unaffected.
+
 ---
 
 ## What actually converges (and what doesn't)
@@ -152,6 +162,17 @@ Agents on Stock Markets," arXiv:2605.28359, May 2026.*
 the winning band above chance and above gpt in both batteries; the biased top_pick metric
 overstated skill because it silently conditions on holding to the bell.
 
+> **Revision (2026-07-08).** "Above chance" here means above 1/3, and 1/3 is the
+> wrong null: a zero-skill trader that buys the band the price currently sits in
+> matches the winner ~59% of the time across the five decision points, and matched to
+> the turns each model actually bought on, both models score essentially *at* that
+> naive baseline in both batteries (residuals −0.03 to +0.02). The claude>gpt gap is
+> therefore largely an entry-timing/attention difference (claude keeps buying at
+> later, informative turns), not a band-picking skill gap. The survivorship lesson —
+> top_pick overstates skill by conditioning on holding to the bell — **stands**, and
+> the peak/buy_flow instrument remains the right correction; it just needs the naive
+> price-follower as its null. See the addendum in `battery_comparison_v1_vs_v2.md`.
+
 **Related work.** No surveyed benchmark uses this exact peak/buy_flow construction — the
 instrument has no close match in the surveyed set. The principle it serves — that
 end-state or contamination-sensitive metrics overstate skill, so a selection-robust measure is
@@ -233,6 +254,21 @@ Large Language Models," arXiv:2602.18481, Feb 2026 (KDD '26).*
 **Finding.** Turning the board live dropped gpt's unbiased discovery from above-chance to
 chance (matched-seed, p≤0.003, both memory conditions), while leaving claude unchanged or
 slightly improved. v1 did not over-credit gpt; the live board degraded a real capability.
+
+> **Revision (2026-07-08).** The matched-seed contrast stands, but both halves of the
+> framing are revised. The v1 "capability" was price-following at informative turns,
+> not forecasting (both models sit at the naive current-band baseline once it is
+> matched to their buy timing). And the mechanism is now substantially identified
+> within existing data: on the live board gpt front-loads ~84% of its buy notional to
+> t=0 (vs 16% frozen) — where no strategy can beat chance — apparently anchoring on a
+> pure-noise board tilt the synthetic flow creates *before the model's first turn*
+> (gpt buys the tilted favorite at t=0 72% of the time; claude buys the middle band
+> 100% of the time and keeps its late informative buys). The sharper statement of this
+> discovery is: *a salient spurious signal at first decision induces premature
+> commitment in gpt-4o but not claude-sonnet-4* — closer to the LLM anchoring-bias
+> literature than to a generic "more information hurts" effect. The v3
+> decorrelated-flow run remains the clean confirmation. See the addendum in
+> `battery_comparison_v1_vs_v2.md`.
 
 **Related work.** No surveyed benchmark converges with this finding. The broad "more
 information need not help" theme appears in the literature, but the surveyed instances operate

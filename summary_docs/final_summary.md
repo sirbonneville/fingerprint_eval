@@ -141,7 +141,24 @@ Comparing the two batteries refines that picture: several effects that looked li
 - Gpt's exact-$333 anchor
 - and the band-width-over-volatility ordering.
 
-The two-personality finding held across both batteries; these did not. Turning the board live also moved gpt's unbiased discovery from above-chance toward chance (matched-seed, p ≤ 0.003) while leaving claude roughly unchanged. That result is still confounded, because the synthetic flow correlates with the readable price line: a decorrelated-flow run is what would separate the two (this is proposed as a v3 battery, see the `v3_decorrelated_flow_spec.md`).
+The two-personality finding held across both batteries; these did not. Turning the board live also moved gpt's unbiased discovery from above-chance toward chance (matched-seed, p ≤ 0.003) while leaving claude roughly unchanged.
+
+> **Revision (2026-07-08).** A later independent review (addendum in
+> `battery_comparison_v1_vs_v2.md`, reproducible via
+> `eval_runs/_review_naive_baseline.py`) reframed the discovery result in two ways.
+> First, the 1/3 chance floor is the wrong null: a zero-skill trader that buys the
+> band the price is currently in matches the eventual winner ~59% of the time
+> averaged over the five decision points, and both models in both batteries score
+> essentially *at* that naive baseline once it is matched to the turns they actually
+> bought on. Neither model ever demonstrated band-picking skill beyond
+> price-following. Second, the v2 drop is largely an **entry-timing** effect: on the
+> live board gpt front-loads ~84% of its buy notional to t=0 (vs 16% frozen), where
+> no strategy can beat chance — apparently anchoring on a pure-noise board tilt the
+> synthetic flow creates *before the model's first turn* — while claude ignores the
+> tilt and keeps buying at later, informative turns. The matched-seed contrast is
+> real, but it measures *when* the models commit, not how well they pick bands. The
+> decorrelated-flow v3 run remains the clean confirmation (see
+> `v3_decorrelated_flow_spec.md`).
 
 A couple of single-battery readings are worth stating as outcomes, neutrally:
 

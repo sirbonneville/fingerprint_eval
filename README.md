@@ -219,6 +219,7 @@ completed battery output only.
 | `calibration_gate.py` | Synthetic-flow sanity checks **before** launching v2 (offline stand-in) | `python3 eval_runs/calibration_gate.py` |
 | `_audit.py` | Independent Phase 1 reducer — recomputes metrics without importing other analysis scripts | `python3 eval_runs/_audit.py` |
 | `_phase2.py` | Phase 2 cross-battery deliverables (matched-seed v1↔v2) | `python3 eval_runs/_phase2.py` |
+| `_review_naive_baseline.py` | Naive price-follower baseline + entry-timing check (backs the 2026-07-08 addendum) | `python3 eval_runs/_review_naive_baseline.py` |
 | `refresh_brand_theme.py` | Update bundled Gensyn dashboard-dark theme from manifest | `python3 eval_runs/refresh_brand_theme.py --write` |
 
 The `_audit.py` / `_phase2.py` pair is what backs
@@ -303,18 +304,23 @@ Two batteries, matched seeds, 1,560 episodes each:
 
 - **Two stable personalities** — gpt-4o: low-activity, concentrated; claude-sonnet-4:
   active, diversified. Rank order survives both batteries.
-- **claude discovers the winning band better than gpt** on unbiased metrics in both
-  batteries; gpt is at chance on a live board.
+- **Neither model out-picks a naive price-follower** (2026-07-08 revision): against a
+  timing-matched "buy the current band" baseline, both models score at baseline in
+  both batteries. The robust cross-model trait is timing/attention — claude spreads
+  trades across the episode and ignores spurious board tilts; gpt concentrates its
+  entry and anchors on them.
 - **Memory → commitment, not accuracy** for claude (win decomposition); gpt memory
   touches activity only.
-- **Environment-dependent, not artifact:** v1 gpt discovery was genuinely above chance
-  on a frozen board and collapsed when the board went live — competence depends on the
-  venue.
+- **The v2 "discovery collapse" is an entry-timing effect** (2026-07-08 revision): on
+  a live board gpt front-loads ~84% of its buy notional to t=0 — where no strategy
+  can beat chance — anchoring on a pure-noise board tilt the synthetic flow creates
+  before its first turn; claude keeps buying at later, informative turns.
 - **Frozen-board artifacts:** gpt's $333.33 budget/3 anchor, the orthogonality 2×2,
   and the band_width↔volatility axis hierarchy.
 
-See `summary_docs/battery_comparison_v1_vs_v2.md` for audit tables, p-values, and open
-questions.
+See `summary_docs/battery_comparison_v1_vs_v2.md` for audit tables, p-values, open
+questions, and the 2026-07-08 addendum (naive-baseline null + entry-timing
+decomposition).
 
 ---
 
